@@ -1,0 +1,1137 @@
+<script type="text/javascript" charset="utf-8">
+  $(function(){
+    $("input#mallhours, input#realestate, input#mall, input#vendor, input#store, input#upload").uniform(); 
+  });
+</script>
+<script type="text/javascript">
+var categorylist = null;
+function resetordermode(fieldid) {
+	$("#sortmode").val("DESC");
+	$("#"+fieldid+"_activity").attr("class","sortdown");
+	$("#sortfield").val(fieldid+"_activity");
+}
+$(document).ready(function() {
+    $("#content").tabs();
+    $(".fields").watermarkify();
+	$("#sortmode").val("DESC");
+	$("#res1_activity").attr("class","sortdown");
+	$("#sortfield").val("res1_activity");
+	$("input#mall_real_estate").autocomplete({
+		source: "/common/getrealestatelist",
+		minLength: 0,
+	});
+	$("input#store_vendor").autocomplete({
+		source: "/common/getvendorlist",
+		minLength: 0,
+	});
+	$("input#store_mall").autocomplete({
+		source: "/common/getmallist",
+		minLength: 0,
+	});
+	$("input#store_category").focus(function(evt){
+		var self=$(this);
+		if(categorylist == null) {
+			$.ajax({
+				type: "POST",
+				url: '/common/getcategorylist',
+				cache: false,
+				data: {term: ""},
+				dataType: 'json',
+				success: function(data){
+					categorylist = new Array();
+					for(i = 0; i < data.length; i++) {
+						categorylist[i] = data[i].label;
+					}
+					self.autocomplete({
+						source: categorylist,
+						minLength: 0,
+					});
+					self.autocomplete('search', "");
+				},
+				error: function(){
+				}
+			});
+		}else {
+			self.autocomplete({
+				source: categorylist,
+				minLength: 0,
+			});
+			self.autocomplete('search', "");
+		}
+	});
+	$("input#vendor_category").focus(function(evt){
+		var self=$(this);
+		if(categorylist == null) {
+			$.ajax({
+				type: "POST",
+				url: '/common/getcategorylist',
+				cache: false,
+				data: {term: ""},
+				dataType: 'json',
+				success: function(data){
+					categorylist = new Array();
+					for(i = 0; i < data.length; i++) {
+						categorylist[i] = data[i].label;
+					}
+					self.autocomplete({
+						source: categorylist,
+						minLength: 0,
+					});
+					self.autocomplete('search', "");
+				},
+				error: function(){
+				}
+			});
+		}else {
+			self.autocomplete({
+				source: categorylist,
+				minLength: 0,
+			});
+			self.autocomplete('search', "");
+		}
+	});
+    getAccountData('all','res_1',1);
+    $(".sortablecolumn span").click(function(){
+        //console.log($(this).attr("id"));
+        $(".sortablecolumn span").attr("class","");
+        if($("#sortmode").val() == "DESC") {
+            $(this).attr("class","sortup");
+            $("#sortmode").val("ASC");
+        } else {
+            $(this).attr("class","sortdown");
+            $("#sortmode").val("DESC");
+        }
+        $("#sortfield").val($(this).attr("id"));
+        refechpage();
+    });
+	/*var uploader = new qq.FileUploader({
+		element: document.getElementById('filedrag'),
+		action: '/account/uploadvendorlogo',
+		debug: false,
+		sizeLimit: 10440000,
+		onComplete: function(id, fileName, responseJSON){
+			if(responseJSON.success == true) {
+				
+			} else {
+				alert("Failed on file upload");
+			}
+		}
+	});*/
+	var uploader = new qq.FileUploader({
+			element: document.getElementById('fileuploader'),
+			action: '/account/uploadvendorlogo',
+			debug: false,
+			sizeLimit: 1044000000,
+			onComplete: function(id, fileName, responseJSON){
+				$("#vendor_logofilename").val(responseJSON.filename);
+			}
+		});
+});
+
+
+$(function(){
+
+
+$("#search_box_job").hide();
+$("#event12").click(function(){
+$("#add").hide();
+$("#res").show();
+$("#search_box_job").hide();
+$("#search_box_event").show();
+
+/*$("#content").find(".left_nav").removeClass("left_nav").addClass("left_nav_active1");
+$("#content").find(".left_nav_active1").removeClass("left_nav_active1").addClass("left_nav");*/
+});
+
+/*$("#left_nav_active").mouseover(function(){
+$("#content").find(".left_nav_active").removeClass("left_nav_active").addClass("remove_color");
+})
+$("#left_nav_active").mouseout(function(){
+$("#content").find(".remove_color").removeClass("remove_color").addClass("left_nav_active");
+})
+
+$("#left_nav").mouseover(function(){
+$("#content").find(".left_nav").removeClass("left_nav").addClass("remove_color1");
+})
+
+$("#left_nav").mouseout(function(){
+$("#content").find(".remove_color1").removeClass("remove_color1").addClass("left_nav");
+})*/
+
+
+$("#job12").click(function(){
+$("#res").hide();
+$("#add").show();
+$("#search_box_job").show();
+$("#search_box_event").hide();
+
+/*$("#content").find(".left_nav").removeClass("left_nav").addClass("left_nav_active1");
+$("#content").find(".left_nav_active").removeClass("left_nav_active").addClass("left_nav");*/
+
+$("#paging_event").hide();
+});
+});
+
+
+
+function activeImage(id)
+{
+    document.getElementById(id).style.backgroundImage = "url(images/add_content_cal.png)";
+    document.getElementById('add_button_active').style.backgroundImage ="url(images/add_content_buttton.png)";
+}
+function activeImage_help(id)
+{
+    document.getElementById(id).style.backgroundImage = "url(images/rollover03.png)";
+    document.getElementById('add_button_active').style.backgroundImage ="url(images/add_content_buttton.png)";
+}
+
+
+</script>
+<style type="text/css">
+#fl {    
+    background:url(images/add_content_cal_active.png);
+    width:114px;
+    height:127px;
+    cursor:pointer;
+}
+#fl:hover {    
+    background:url(images/rollover01.png);
+    width:114px;
+    height:127px;
+    cursor:pointer;
+}
+#fr {
+    background:url(images/help_wanted.png);
+    width:167px;
+    height:138px;
+    cursor:pointer;
+}
+#fr:hover {
+    background:url(images/rollover02.png);
+    width:167px;
+    height:138px;
+    cursor:pointer;
+}
+</style>
+
+<!-- popups start here -->
+<div class="faded_bg" id="add_account_popup" style="display:none;">
+    <div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="event_popup_inner">
+                            <div class="popup_baord_strip" style="height:21px;">
+                              <div class="popup_baord_left" style="height:21px;"><h1>Create Account</h1></div>
+                              <div onclick="div_sataus('add_account_popup')" class="popup_baord_right" style="height:21px;">
+                                  <a href="#"><img alt="" src="images/close_popup.png"></a>
+                              </div>
+                              <div class="clear"></div>
+                            </div>
+                            
+                            <div class="event_select">
+								<form id="real_select" name="real_select">
+									<input type="radio"  id="realestate" name="radio" checked="checked" onclick="real_estate_popup()"> Real Estate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="radio"  id="mall" name="radio"  onclick="mall_popup()"> Mall&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="radio"  id="vendor" name="radio"  onclick="vandor_popup()"> Vendor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="radio" id="store" name="radio" onclick="store_popup()"> Store    
+								</form>
+                             <div class="input_area add_user_con" id="realestate_form"  style="display:block">
+                              <form id="real_estate" name="real_select" method="post" >
+                             
+                            <input type="text" title="Real Estate company" value="" class="event_input fields" id="event_name" name="real_name" style="">
+                            
+                            <input type="text" title="Address 1" value="" class="event_input fields" id="event_name" name="real_addr1" style="">
+                            
+                            <input type="text" title="Address 2" value="" class="event_input fields" id="event_name" name="real_addr2" style="">
+                            
+                            <label class="left releft" style="margin-bottom:0px!important;">
+                            <input type="text" title="City" value="" class="mall_store fields" id="city" name="real_city" style=""> 
+                            <div class="clear"></div>
+                            </label>
+                            <label class="right releft" style="margin-bottom:0px!important;"> 
+                            <input type="text" title="Postal Code / Zip Code" value="" class="mall_store fields" id="code" name="real_zipcode" style="">
+                             </label>   
+                    <label class="left reright"style="margin-bottom:0px!important;"> 
+                    
+                    <select  name="real_province" style=" line-height:25px; display:block; width:380px; padding:0 0px; height:30px; margin:1px 0 10px 0; padding:5px 0; color:#999;border:1px solid #DDDDDD;">    
+                    <option>Province / State</option>
+                    <option id="USA-AL" value="AL">Alabama (AL)</option>
+                                    <option id="USA-AK" value="AK">Alaska (AK)</option>
+                                    <option id="USA-AZ" value="AZ">Arizona (AZ)</option>
+                                    <option id="USA-AR" value="AR">Arkansas (AR)</option>             
+                                    <option id="USA-CA" value="CA">California (CA)</option>
+                                    <option id="USA-CO" value="CO">Colorado (CO)</option>
+                                    <option id="USA-CT" value="CT">Connecticut (CT)</option>
+                                    <option id="USA-DE" value="DE">Delaware (DE)</option>
+                                    <option id="USA-DC" value="DC">District of Columbia (DC)</option>    
+                                    <option id="USA-FL" value="FL">Florida (FL)</option>
+                                    <option id="USA-GA" value="GA">Georgia (GA)</option>
+                                    <option id="USA-GU" value="GU">Guam (GU)</option>
+                                    <option id="USA-HI" value="HI">Hawaii (HI)</option>
+                                    <option id="USA-ID" value="ID">Idaho (ID)</option>
+                                    <option id="USA-IL" value="IL">Illinois (IL)</option>
+                                    <option id="USA-IN" value="IN">Indiana (IN)</option>
+                                    <option id="USA-IA" value="IA">Iowa (IA)</option>
+                                    <option id="USA-KS" value="KS">Kansas (KS)</option>
+                                    <option id="USA-KY" value="KY">Kentucky (KY)</option>
+                                    <option id="USA-LA" value="LA">Louisiana (LA)</option>
+                                    <option id="USA-ME" value="ME">Maine (ME)</option>
+                                    <option id="USA-MD" value="MD">Maryland (MD)</option>
+                                    <option id="USA-MA" value="MA">Massachusetts (MA)</option>
+                                    <option id="USA-MI" value="MI">Michigan (MI)</option>
+                                    <option id="USA-MN" value="MN">Minnesota (MN)</option>
+                                    <option id="USA-MS" value="MS">Mississippi (MS)</option>
+                                    <option id="USA-MO" value="MO">Missouri (MO)</option>
+                                    <option id="USA-MT" value="MT">Montana (MT)</option>
+                                    <option id="USA-NE" value="NE">Nebraska (NE)</option>
+                                    <option id="USA-NV" value="NV">Nevada (NV)</option>
+                                    <option id="USA-NH" value="NH">New Hampshire (NH)</option>
+                                    <option id="USA-NJ" value="NJ">New Jersey (NJ)</option>
+                                    <option id="USA-NM" value="NM">New Mexico (NM)</option>
+                                    <option id="USA-NY" value="NY">New York (NY)</option>
+                                    <option id="USA-NC" value="NC">North Carolina (NC)</option>
+                                    <option id="USA-ND" value="ND">North Dakota (ND)</option>
+                                    <option id="USA-OH" value="OH">Ohio (OH)</option>
+                                    <option id="USA-OK" value="OK">Oklahoma (OK)</option>
+                                    <option id="USA-OR" value="OR">Oregon (OR)</option>
+                                    <option id="USA-PA" value="PA">Pennsylvania (PA)</option>
+                                    <option id="USA-PR" value="PR">Puerto Rico (PR)</option>
+                                    <option id="USA-RI" value="RI">Rhode Island (RI)</option>
+                                    <option id="USA-SC" value="SC">South Carolina (SC)</option>
+                                    <option id="USA-SD" value="SD">South Dakota (SD)</option>
+                                    <option id="USA-TN" value="TN">Tennessee (TN)</option>
+                                    <option id="USA-TX" value="TX">Texas (TX)</option>
+                                    <option id="USA-UT" value="UT">Utah (UT)</option>
+                                    <option id="USA-VT" value="VT">Vermont (VT)</option>
+                                    <option id="USA-VA" value="VA">Virginia (VA)</option>
+                                    <option id="USA-VI" value="VI">Virgin Islands (VI)</option>
+                                    <option id="USA-WA" value="WA">Washington (WA)</option>
+                                    <option id="USA-WV" value="WV">West Virginia (WV)</option>
+                                    <option id="USA-WI" value="WI">Wisconsin (WI)</option>
+                                    <option id="USA-WY" value="WY">Wyoming (WY)</option>
+                                    <option id="CAN-AB" value="AB">Alberta (AB)</option>
+                                    <option id="CAN-BC" value="BC">British Columbia (BC)</option>
+                                    <option id="CAN-MB" value="MB">Manitoba (MB)</option>
+                                    <option id="CAN-NB" value="NB">New Brunswick (NB)</option>
+                                    <option id="CAN-NL" value="NL">Newfoundland and Labrador (NL)</option>
+                                    <option id="CAN-NT" value="NT">Northwest Territories (NT)</option>
+                                    <option id="CAN-NS" value="NS">Nova Scotia (NS)</option>
+                                    <option id="CAN-NU" value="NU">Nunavut (NU)</option>
+                                    <option id="CAN-PE" value="PE">Prince Edward Island (PE)</option>
+                                    <option id="CAN-SK" value="SK">Saskatchewan (SK)</option>
+                                    <option id="CAN-ON" value="ON">Ontario (ON)</option>
+                                    <option id="CAN-QC" value="QC">Quebec (QC)</option>
+                                    <option id="CAN-YT" value="YT">Yukon (YT)</option>                                
+                    </select><div class="clear"></div>
+                    </label>  
+                    <label class="right reright"style="margin-bottom:0px!important;"> 
+                     
+                    <select   id="country" name="real_country"  style=" line-height:25px; display:block; width:380px; padding:0 0px; height:30px; margin:1px 0 10px 0; padding:5px 0; color:#999;border:1px solid #DDDDDD;">    
+                   <option value="USA">USA</option>
+                   <option value="Canada">Canada</option>
+                    </select>
+                    </label>
+                     <div class="clear"></div>
+                            
+                           <div class="Website"> <input type="Account" title="Website" value="" class="event_input fields" id="event_name" name="real_website" style=""></div>
+                             
+                             
+                            </form> 
+                             </div> 
+                            <!--*******************-->
+                             <div class="input_area add_user_con" id="mall_form" style="display:none"> 
+								<form class="" id="mall" method="post"> 
+								<input type="text" title="Shopping Mall" value="" class="event_input fields" id="event_name" name="mall_name" style="">
+								
+								<input type="text" title="Address 1" value="" class="event_input fields" id="event_name" name="mall_addr1" style="">
+								
+								<input type="text" title="Address 2" value="" class="event_input fields" id="event_name" name="mall_addr2" style="">
+								
+								<label class="left releft" style="margin-bottom:0px!important;">
+									<input type="text" title="City" value="" class="mall_store fields" id="city" name="mall_city" style="">
+								</label>
+								<label class="right releft" style="margin-bottom:0px!important;">
+									<div class="clear"></div>
+									<input type="text" title="Postal Code / Zip Code" value="" class="mall_store fields" id="code" name="mall_zipcode" style="">
+								</label>
+                            
+								<label class="left reright newright"style="margin-bottom:0px!important;"> 
+									<select name="mall_state" style=" line-height:25px; display:block; width:380px; padding:0 0px; height:30px; margin:1px 0 10px 0; padding:5px 0; color:#999;border:1px solid #DDDDDD;">    
+										<option>Province / State</option>
+										<option id="USA-AL" value="AL">Alabama (AL)</option>
+										<option id="USA-AK" value="AK">Alaska (AK)</option>
+										<option id="USA-AZ" value="AZ">Arizona (AZ)</option>
+										<option id="USA-AR" value="AR">Arkansas (AR)</option>             
+										<option id="USA-CA" value="CA">California (CA)</option>
+										<option id="USA-CO" value="CO">Colorado (CO)</option>
+										<option id="USA-CT" value="CT">Connecticut (CT)</option>
+										<option id="USA-DE" value="DE">Delaware (DE)</option>
+										<option id="USA-DC" value="DC">District of Columbia (DC)</option>    
+										<option id="USA-FL" value="FL">Florida (FL)</option>
+										<option id="USA-GA" value="GA">Georgia (GA)</option>
+										<option id="USA-GU" value="GU">Guam (GU)</option>
+										<option id="USA-HI" value="HI">Hawaii (HI)</option>
+										<option id="USA-ID" value="ID">Idaho (ID)</option>
+										<option id="USA-IL" value="IL">Illinois (IL)</option>
+										<option id="USA-IN" value="IN">Indiana (IN)</option>
+										<option id="USA-IA" value="IA">Iowa (IA)</option>
+										<option id="USA-KS" value="KS">Kansas (KS)</option>
+										<option id="USA-KY" value="KY">Kentucky (KY)</option>
+										<option id="USA-LA" value="LA">Louisiana (LA)</option>
+										<option id="USA-ME" value="ME">Maine (ME)</option>
+										<option id="USA-MD" value="MD">Maryland (MD)</option>
+										<option id="USA-MA" value="MA">Massachusetts (MA)</option>
+										<option id="USA-MI" value="MI">Michigan (MI)</option>
+										<option id="USA-MN" value="MN">Minnesota (MN)</option>
+										<option id="USA-MS" value="MS">Mississippi (MS)</option>
+										<option id="USA-MO" value="MO">Missouri (MO)</option>
+										<option id="USA-MT" value="MT">Montana (MT)</option>
+										<option id="USA-NE" value="NE">Nebraska (NE)</option>
+										<option id="USA-NV" value="NV">Nevada (NV)</option>
+										<option id="USA-NH" value="NH">New Hampshire (NH)</option>
+										<option id="USA-NJ" value="NJ">New Jersey (NJ)</option>
+										<option id="USA-NM" value="NM">New Mexico (NM)</option>
+										<option id="USA-NY" value="NY">New York (NY)</option>
+										<option id="USA-NC" value="NC">North Carolina (NC)</option>
+										<option id="USA-ND" value="ND">North Dakota (ND)</option>
+										<option id="USA-OH" value="OH">Ohio (OH)</option>
+										<option id="USA-OK" value="OK">Oklahoma (OK)</option>
+										<option id="USA-OR" value="OR">Oregon (OR)</option>
+										<option id="USA-PA" value="PA">Pennsylvania (PA)</option>
+										<option id="USA-PR" value="PR">Puerto Rico (PR)</option>
+										<option id="USA-RI" value="RI">Rhode Island (RI)</option>
+										<option id="USA-SC" value="SC">South Carolina (SC)</option>
+										<option id="USA-SD" value="SD">South Dakota (SD)</option>
+										<option id="USA-TN" value="TN">Tennessee (TN)</option>
+										<option id="USA-TX" value="TX">Texas (TX)</option>
+										<option id="USA-UT" value="UT">Utah (UT)</option>
+										<option id="USA-VT" value="VT">Vermont (VT)</option>
+										<option id="USA-VA" value="VA">Virginia (VA)</option>
+										<option id="USA-VI" value="VI">Virgin Islands (VI)</option>
+										<option id="USA-WA" value="WA">Washington (WA)</option>
+										<option id="USA-WV" value="WV">West Virginia (WV)</option>
+										<option id="USA-WI" value="WI">Wisconsin (WI)</option>
+										<option id="USA-WY" value="WY">Wyoming (WY)</option>
+										<option id="CAN-AB" value="AB">Alberta (AB)</option>
+										<option id="CAN-BC" value="BC">British Columbia (BC)</option>
+										<option id="CAN-MB" value="MB">Manitoba (MB)</option>
+										<option id="CAN-NB" value="NB">New Brunswick (NB)</option>
+										<option id="CAN-NL" value="NL">Newfoundland and Labrador (NL)</option>
+										<option id="CAN-NT" value="NT">Northwest Territories (NT)</option>
+										<option id="CAN-NS" value="NS">Nova Scotia (NS)</option>
+										<option id="CAN-NU" value="NU">Nunavut (NU)</option>
+										<option id="CAN-PE" value="PE">Prince Edward Island (PE)</option>
+										<option id="CAN-SK" value="SK">Saskatchewan (SK)</option>
+										<option id="CAN-ON" value="ON">Ontario (ON)</option>
+										<option id="CAN-QC" value="QC">Quebec (QC)</option>
+										<option id="CAN-YT" value="YT">Yukon (YT)</option>                                
+									</select>
+								</label>
+								<label class="right reright newright"style="margin-bottom:0px!important;"> 
+									<div class="clear"></div>
+									<select name="mall_country" id="country" style=" line-height:25px; display:block; width:380px; padding:0 0px; height:30px; margin:1px 0 10px 0; padding:5px 0; color:#999;border:1px solid #DDDDDD;">
+										<option value="USA">USA</option>
+										<option value="Canada">Canada</option>
+									</select>
+								</label>
+								<label class="left releft" style="margin-bottom:0px!important;">
+									<div class="clear"></div>
+									<input type="text" title="Customer Service Number" value="" class="mall_store fields" id="code" name="mall_customer_service" style="">
+								</label>
+								<label class="right reright newright"style="margin-bottom:0px!important;"> 
+									<div class="clear"></div>
+									<input type="text" title="Security Number" value="" class="mall_store fields" id="code" name="mall_ssn" style="">
+								</label>
+									<div class="clear"></div>
+								<div class="Website"> <input type="Account" title="Website" value="" class="event_input fields" id="event_name" name="mall_website" style=""></div>
+								<!--<div class="Website"> <input type="Account" title="Email" value="" class="event_input fields" id="event_name" name="mall_email" style=""></div>-->
+								<div class="Website"> <input type="Account" title="Real Estate" value="" class="event_input fields" id="mall_real_estate" name="mall_real_estate" style=""></div>
+                             </form>
+                             </div>
+                             <!--*******************-->
+
+							<div class="vandor" id="vandor_form" style="display:none">
+								<div style="height:10px; display:none; clear:both; width:100%" id="extadiv2" ></div>
+								<form action="" method="post" id="vendor">
+									<div class="input_area">
+										<input type="text" name="vendor_name" id="event_name" class="event_input fields" value="" style=" margin-bottom:10px!important;" title="Vendor"/ >
+										<div class="clear"></div>
+										<input type="text" name="vendor_category" id="vendor_category" class="event_input fields" value="" title="Category"/>
+									</div>
+									<div class="text_area">
+										<textarea rows="0" title="Description" class="description_input fields" name="vendor_desc" id="event_desc"  cols="0" onclick="removeError('des_error')"></textarea>
+									</div>
+									<input type="hidden" value="" id="vendor_logofilename" name="vendor_logofilename" class="required-entry" />      
+								</form>
+								<form id="uploadfiles" name="uploadfiles" method="POST" enctype="multipart/form-data" action="" >
+								<div id="fileuploader">		
+									<noscript>			
+									<p>Please enable JavaScript to use file uploader.</p>
+									<!-- or put a simple form for upload here -->
+									</noscript>
+								</div>
+								</form>
+							</div>  
+                              <!--*******************-->
+                              
+                             <div class="store" id="store_form" style="display:none">
+                             <div style="height:10px; clear:both; width:100%" ></div>
+                             <form action="" method="post" id="store">  
+                                   <div class="input_area">
+                     <input type="text" name="store_vendor" id="store_vendor" class="event_input fields" value="" style=" margin-bottom:10px!important;" title="Vendor"/ >
+                     <div class="clear"></div>
+                     
+                      <input type="text" name="store_mall" id="store_mall" class="event_input fields" value="" style=" margin-bottom:10px!important;" title="Shopping Mall"/ >
+                     <div class="clear"></div>
+                     <input type="text" name="store_category" id="store_category" class="event_input fields" value="" title="Category"/>
+                        
+                    </div>
+                                    <div class="text_area">
+                                    
+                                    <textarea rows="0" title="Description" class="description_input fields" name="store_desc" id="event_desc"  cols="0" onclick="removeError('des_error')"></textarea>
+                                    
+                                    </div>
+                    </form>
+                             </div>                               
+                              <!--*******************-->
+                            
+                            <div class="clear"></div>
+                            <div style="height:50px; clear:both; width:100%" display:none id="extadiv" ></div>
+                            <div onclick="div_sataus('add_account_popup')" class="cancel_btn fl">cancel</div>
+                            <div onclick="return addNewAccountData()" class="save_btn fr">
+                            <input  type="hidden" name="activeForm" id="activeForm" value="real_estate"/>
+                            <!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->
+                              <a class="savef" href="#">save</a> </div>                            
+                             
+                          
+                    </div>
+                          
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>     
+
+
+
+<!-- CONFIRM DELETE POPUP -->
+<div id="content_delete_popup" class="popups" style="display:none"></div>
+<!-- CONFIRM DELETE POPUP -->
+<!-- DELETE SUCCESSFULL POPUP -->
+<div class="faded_bg" id="content_delete_successfull_popup" style="display:none;">
+<div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right">
+<a href="#" onclick="div_sataus('content_delete_successfull_popup')"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="add_content_inner">
+                            <div class="lets_add_heading">Delete successful!</div>
+          <div class="add_button"><a href="#" onclick="div_sataus('content_delete_successfull_popup')">close</a></div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--faded_bg ends-->
+
+
+<!-- DELETE SUCCESS FULLPOPUP -->
+
+<!--SAVE FORM SUCCESAS START-->
+<div class="faded_bg" id="save-form-content" style="display:none;">
+<div class="popups_edit1">
+  <div id="saved_successfully_popup" class="popups">
+    <div class="popup_top"></div>
+    <div class="popup_bottom">
+      <div class="popup_mid">
+        <div class="popup_baord_strip">
+          <div class="popup_baord_left"></div>
+          <div class="popup_baord_mid"></div>
+          <div class="popup_baord_right" onclick="div_sataus('save-form-content')"> <a href="#"><img src="images/close_popup.png" alt="" /></a> </div>
+          <div class="clear"></div>
+        </div>
+        <div class="popup_box_patttern">
+          <div class="popup_paper_strip">
+            <div class="add_content_inner">
+              <div class="lets_add_heading">Form saved successfully!</div>
+              <div class="add_button" onclick="div_sataus('save-form-content')"><a href="#" onclick="countRecords();">close</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!--faded_bg ends-->
+<!-- SAVE FORM SUCCESS END -->
+
+<!-- ADD NEW EVENT POPUP -->
+
+<script type="text/javascript">
+$(function() {
+        $('#txtcal').datepicker({
+    onSelect: function(dateText, inst) {
+        var pieces = dateText.split('/');
+        $('#start_mm').val(pieces[0]);
+        $('#start_dd').val(pieces[1]);
+        $('#start_yy').val(pieces[2]);
+    }
+})
+});
+$(function() {
+        $('#txtcal2').datepicker({
+    onSelect: function(dateText, inst) {
+        var pieces = dateText.split('/');
+        $('#end_mm').val(pieces[0]);
+        $('#end_dd').val(pieces[1]);
+        $('#end_yy').val(pieces[2]);
+    }
+})
+$("#searchValue").keypress(function(e){
+ if(e.which == 13)
+ $("#search_img").click();
+});
+});
+
+$(function() {
+    $( "#edit_jobimg" ).datepicker({
+     onSelect: function(dateText, inst) {
+     var pieces = dateText.split('/');
+       $('#mm').val(pieces[0]);
+        $('#dd').val(pieces[1]);
+        $('#yyyy').val(pieces[2]);
+        }
+})
+});
+
+</script>
+<!-- ======================================== ADD NEW EVENT START ======================================================== -->
+<div id="add_new_event_modal_admin_popup" class="faded_bg" style="display:none;">
+<div class="popups_edit">
+    <div class="popup_top"></div>
+    <div class="popup_bottom">
+      <div class="popup_mid">
+        
+        <div class="popup_box_patttern">
+          <div class="popup_paper_strip">
+              <div class="event_popup_inner">
+              <div class="popup_baord_strip" style="height:21px;">
+          <div class="popup_baord_left" style="height:21px;"><h1>Request <strong>Mall Transfer</strong></h1></div>
+          <div class="popup_baord_right" style="height:21px;"> <a href="#" onclick="div_sataus('add_new_event_modal_admin_popup')"><img src="images/close_popup.png" alt="" /></a></div>
+          <div class="clear"></div>
+        </div>
+            
+                 <div class="lets_add_heading">&nbsp;</div>
+               
+                <div class="event_con">
+                    
+                     
+                    <div class="text_area">
+                    
+                     <textarea onclick="removeError('des_error')" cols="0" id="event_desc" name="event_desc " class="description_input fields" title="
+Experience" rows="0"></textarea>
+                    
+                    
+                    
+                    </div>
+                    
+                    
+                    <div class="datearea">
+                    
+                       <div style="margin:5px 0;" class="left_side_mall">
+                       <table cellspacing="0" cellpadding="0" border="0" class="datetable" style="margin:20px 0 0 0;">
+                              <tbody><tr>
+                                <td colspan="3"><div style=" width:100%; margin:5px 0 0 0;" class="lets_add_heading">House of Operation</div></td>
+                               
+                              </tr>
+                              <tr>
+                                <td>Monday</td>
+                                <td>
+                                <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Tuesday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                               <tr>
+                                <td>Wednesday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                              
+                              <tr>
+                                <td>Thursday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                               
+                              
+                            </tbody></table>
+                       <table cellspacing="0" cellpadding="0" border="0" class="datetable" style="margin:20px 0 0 0;">
+                              <tbody>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                             <tr>
+                                <td>Friday</td>
+                               <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                               <tr>
+                                <td>Saturday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                               <tr>
+                                <td>Sunday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="3">Same as Mall Hours <input name="" type="checkbox" value="" id="mallhours" /></td>
+                              </tr>
+                            </tbody></table>
+                        <div class="clear"></div>
+                        
+                        <div class="telephoneNumver_area">
+                        
+                            <input type="text" value="" class="telephone fields" title="Customer Service" name="">
+                            <input type="text" value="" class="telephone fields"  title="Customer Service" name="">
+                            <select name="" accesskey="cat_1" style="width:238px; height:31px; border: 1px solid #DDDDDD; color: #D0CFCF;">
+                                <option>Category*</option>
+                            </select>
+                        </div>
+                     </div>
+                
+                      
+                
+                    </div>
+                    
+                    
+                    
+                    <div class="clear"></div>
+                    <div onclick="div_sataus('add_new_event_modal_admin_popup')" class="cancel_btn fl"><a href="#">cancel</a></div>
+                            
+                <div onclick="return addRecord()" class="save_btn fr"><!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->         <a class="savef" href="#">save</a> </div>
+                    
+                 </div>
+             
+                    <div class="clear"></div>
+               
+                 </div>
+                 
+              
+              </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+</div>    
+
+<!-- ======================================== ADD NEW EVENT START END ======================================================== --> 
+ <!-- ========================================ADD NEW JOB START ========================================================= -->
+<div id="add_new_job_admin_modal_popup" class="faded_bg" style="display:none;">
+<div class="popups_edit">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right" >
+                        <a href="#"  onclick="div_sataus('add_new_job_admin_modal_popup')"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="event_popup_inner">
+                        lkfsfd;lksa;lfk;lsafk;lskdf;lksfd;lk;lsdkf;l
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  </div>
+<!-- ========================================ADD NEW JOB START END ========================================================= -->
+
+
+  
+    <!-- leftpannel start here -->
+    <div class="leftpannel">
+    
+<!-- search Box Start -->    
+      <div class="search_box" >
+        <div class="search_input_box">
+          <div class="search_btn">
+            <input type="image" src="images/search_btn.png" id="search_img" onclick="searchValue('searchValue');"  />
+          </div>
+          <div class="search_input">
+            <input type="text" class="search_input" value="" id="searchValue" placeholder="Search event"  />
+          </div>
+          <div><input type="button" class="reset" name="reset" id="reset_event" value="" onclick="resetRecords('reset_event');" /></div> 
+          <div class="clear"></div>
+        </div>
+      </div>
+      
+<!-- search box End -->      
+   <ul>
+      <li><a href="#res_1" class='basic' id="event12" onclick="resetordermode('res1');$('#curcategory').val('all');getAccountData('all','res_1', 1);" ><span class="img_tab">All</span><span class="count_all"><?php
+      
+        echo $this->data['account_status']['all'];
+        
+        ?></span></a>
+      
+      <!--<div    class="left_nav" id="left_nav_active">
+      <div class="event_icon">&nbsp;</div>
+      <div class="event_text"> </div>
+
+        <div class="event_details" id="countRecords">
+        <?php
+         echo $this->data['account_status']['all']; 
+        ?>
+    </div>
+        <div class="clear"></div>
+      </div>--></li>
+      
+      
+      <li> <a href="#res_2"  id="job12" onclick="resetordermode('res2');$('#curcategory').val('activate');getAccountData('activate','res_2', 1);"><span class="img_tab">Activate</span><span class="count_all">          <?php
+             echo $this->data['account_status']['activate']; 
+            ?></span></a>
+             
+      
+      <!--<div onmouseover="enter(this)" onmouseout="leave(this)"   class="left_nav" id="left_nav">
+          <div class="event_icon">&nbsp;</div>
+          <div class="event_text" >
+                 
+          </div>
+          <div class="event_details">
+          <?php
+            echo $this->data['account_status']['activate'];    
+            ?>
+              </div>
+          <div class="clear"></div>
+      </div>--></li>
+      
+     <li> <a href="#res_3"  id="job12" onclick="resetordermode('res3');$('#curcategory').val('pending');getAccountData('pending','res_3', 1);"><span class="img_tab">Pending</span><span class="count_all">          <?php
+            echo $this->data['account_status']['pending'];    
+            ?></span></a>
+       
+     <!--<div onmouseover="enter(this)" onmouseout="leave(this)"   class="left_nav" id="left_nav">
+          <div class="event_icon">&nbsp;</div>
+          <div class="event_text" >
+                  <a href="#res_3"  id="job12">Pending</a>
+          </div>
+          <div class="event_details">
+          <?php
+            echo $this->data['account_status']['pending'];    
+            ?>
+              </div>
+          <div class="clear"></div>
+      </div>--></li>
+      
+     <li> <a href="#res_4"  id="job12" onclick="resetordermode('res4');$('#curcategory').val('realestate');getRealstateData('realestate','res_4', 1);" ><span class="img_tab">Real Estate</span><span class="count_all">          <?php
+            echo $this->data['account_status']['realstate'];    
+            ?></span></a>
+     
+     <!--<div onmouseover="enter(this)" onmouseout="leave(this)"   class="left_nav" id="left_nav" >
+          <div class="event_icon">&nbsp;</div>
+          <div class="event_text" >
+                  <a href="#res_4"  id="job12">Real Estate</a>
+          </div>
+          <div class="event_details">
+          <?php
+            echo $this->data['account_status']['realstate'];    
+            ?>
+              </div>
+          <div class="clear"></div>
+      </div>--></li>
+      
+     <li> <a href="#res_5"  id="job12" onclick="resetordermode('res5');$('#curcategory').val('mall');getMallData('mall','res_5',1);"><span class="img_tab">Mall</span><span class="count_all">          <?php
+              echo $this->data['account_status']['mall'];    
+            ?></span></a>
+     
+     
+     <!--<div onmouseover="enter(this)" onmouseout="leave(this)"   class="left_nav" id="left_nav" >
+          <div class="event_icon">&nbsp;</div>
+          <div class="event_text" >
+                  <a href="#res_5"  id="job12">Mall</a>
+          </div>
+          <div class="event_details">
+          <?php
+            echo $this->data['account_status']['mall'];    
+            ?>
+              </div>
+          <div class="clear"></div>
+      </div>--></li>
+      
+     
+      
+     <li> <a href="#res_7"  id="job12" onclick="resetordermode('res7');$('#curcategory').val('vendor');getVendorData('vendor','res_7',1);"><span class="img_tab">Vendor</span><span class="count_all">          <?php
+              echo $this->data['account_status']['vendor'];    
+            ?></span></a>
+     
+     
+     <!--<div onmouseover="enter(this)" onmouseout="leave(this)"   class="left_nav" id="left_nav" >
+          <div class="event_icon">&nbsp;</div>
+          <div class="event_text" >
+                  <a href="#res_7"  id="job12">Vendor</a>
+          </div>
+          <div class="event_details">
+          <?php
+            echo $this->data['account_status']['vendor'];    
+            ?>
+              </div>
+          <div class="clear"></div>
+      </div>--></li>
+      
+     <li> <a href="#res_8"  id="job12" onclick="resetordermode('res8');$('#curcategory').val('store');getStoreData('store','res_8',1);"><span class="img_tab">Store</span><span class="count_all">          <?php
+             echo $this->data['account_status']['store'];    
+            ?></span></a>
+     
+     
+     <!--<div onmouseover="enter(this)" onmouseout="leave(this)"   class="left_nav" id="left_nav">
+          <div class="event_icon">&nbsp;</div>
+          <div class="event_text" >
+                  <a href="#res_8"  id="job12">Store</a>
+          </div>
+          <div class="event_details">
+          <?php
+             echo $this->data['account_status']['store'];    
+            ?>
+              </div>
+          <div class="clear"></div>
+      </div>--></li>
+      
+  </ul>
+      
+      <div class="add_content_button" onclick="div_sataus('add_account_popup')">Add Account</div>
+    </div>
+    
+    <!--rightpanel   start here -->
+    <div class="rightpannel">
+    <!--rightpanel  All Nav Area Code start here -->
+          <div id="res_1" class="right_nav">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+                <td width="10%" scope="col" align="center" class="sortablecolumn"><span id="res1_status">Status</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res1_type">Account Type</span></td>
+                <td width="30%" scope="col" class="sortablecolumn"><span id="res1_name">Account Name</span></td>
+                <td width="11%" scope="col" class="sortablecolumn"><span id="res1_activity">Last Activity</span></td>
+                <td width="7%">&nbsp;</td>
+                <td width="7%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div>
+     <!--rightpanel  All Nav Area Code End here -->
+     
+     
+     
+     <!--rightpanel  Activate Nav Area Code Start here -->
+      <div id="res_2" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+                <td width="10%" scope="col" align="center" class="sortablecolumn"><span id="res2_status">Status</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res2_type">Account Type</span></td>
+                <td width="30%" scope="col" class="sortablecolumn"><span id="res2_name">Account Name</span></td>
+                <td width="11%" scope="col" class="sortablecolumn"><span id="res2_activity">Last Activity</span></td>
+                <td width="7%">&nbsp;</td>
+                <td width="7%">&nbsp;</td>
+              </tr>
+              
+    </table>
+          </div> 
+     <!--rightpanel  Activate Nav Area Code End here -->
+     
+     
+     <!--rightpanel  PENDING Nav Area Code Start here -->
+      <div id="res_3" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+                <td width="10%" scope="col" align="center" class="sortablecolumn"><span id="res3_status">Status</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res3_type">Account Type</span></td>
+                <td width="30%" scope="col" class="sortablecolumn"><span id="res3_name">Account Name</span></td>
+                <td width="11%" scope="col" class="sortablecolumn"><span id="res3_activity">Last Activity</span></td>
+                <td width="7%">&nbsp;</td>
+                <td width="7%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div> 
+     <!--rightpanel  PENDING Nav Area Code End here -->
+     
+     
+      <!--rightpanel  REAL ESTATE Nav Area Code Start here -->
+     <div id="res_4" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+                <td width="8%" scope="col" align="center" class="sortablecolumn"><span id="res4_status">Status</span></td>
+                <td width="15%" scope="col" class="sortablecolumn"><span id="res4_company">Real Estate Company</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res4_mallcnt">Total Malls</span></td>
+                <td width="12%" scope="col" class="sortablecolumn"><span id="res4_gla">Total GLA</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res4_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div>
+     <!--rightpanel  REAL ESTATE Nav Area Code End here -->
+     
+     
+     <!--rightpanel  MALL Nav Area Code Start here -->
+     <div id="res_5" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+                <td width="10%" scope="col" align="center" class="sortablecolumn"><span id="res5_status">Status</span></td>
+                <td width="20%" scope="col" class="sortablecolumn"><span id="res5_mallname">Shopping Mall</span></td>
+                <td width="8%" scope="col" class="sortablecolumn"><span id="res5_sqft">SQFT</span></td>
+                <td width="8%" scope="col" class="sortablecolumn"><span id="res5_fans">Fans</span></td>
+                <td width="8%" scope="col" class="sortablecolumn"><span id="res5_sessions">Sessions</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res5_city">City</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res5_country">Country</span></td>
+                <td width="15%" scope="col" class="sortablecolumn"><span id="res5_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div>
+     <!--rightpanel  MALL Nav Area Code End here -->
+     
+     
+     
+      <!--rightpanel  STORE Nav Area Code Start here -->
+     <div id="res_8" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+               <td width="10%" scope="col" align="center" class="sortablecolumn"><span id="res8_status">Status</span></td>
+                <td width="15%" scope="col" class="sortablecolumn"><span id="res8_vendor">Store</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res8_mallname">Mall</span></td>
+                <td width="30%" scope="col" class="sortablecolumn"><span id="res8_category">Category</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res8_fans">Fans</span></td>
+                <td width="15%" scope="col" class="sortablecolumn"><span id="res8_activity">Last Activity</span></td>
+                <td width="7%">&nbsp;</td>
+                <td width="7%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div>
+     <!--rightpanel  STORE Nav Area Code End here -->
+     
+     
+      <!--<div style="text-align:center" id="paging_event">
+   
+  
+          <?php
+           /* for($i=1; $i<=$total_pages; $i++)
+            {
+             echo '<a href="#" id='.$i.' class="pagination" onclick="return pagination('.$i.');" style="text-decoration:none;">&nbsp;'.$i.'&nbsp;</a>';
+            }*/
+            ?>
+    </div>-->
+    <!--res-->
+    
+    <!--rightpanel  VENDOR Nav Area Code Start here -->
+     <div id="res_7" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+               <td width="10%" scope="col" align="center" class="sortablecolumn"><span id="res7_status">Status</span></td>
+                <td width="15%" scope="col" class="sortablecolumn"><span id="res7_vendor">Vendor</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res7_totalstores">Total Stores</span></td>
+                <td width="30%" scope="col" class="sortablecolumn"><span id="res7_category">Category</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res7_fans">Fans</span></td>
+                <td width="15%" scope="col" class="sortablecolumn"><span id="res7_activity">Last Activity</span></td>
+                <td width="7%">&nbsp;</td>
+                <td width="7%">&nbsp;</td>
+              </tr>
+              
+    </table>
+          </div>
+     <!--rightpanel  VENDOR Nav Area Code End here -->
+       
+    <div id="editrec"></div>
+    <input type="hidden" id="curcategory" value="all" />
+    <input type="hidden" id="sortmode" value="ASC" />
+    <input type="hidden" id="sortfield" value="" />
+	<input type="hidden" id="cntperpage" value="25" />
+        </div>  
+   <!--rightpanel  All Nav Area Code start here -->
+  

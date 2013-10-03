@@ -1,0 +1,180 @@
+/**
+* uploader
+**/
+
+.uploadifyQueueItem {
+	font: 11px Verdana, Geneva, sans-serif;
+	margin-top: 5px;
+	padding: 10px;
+	width: 97%;
+}
+.uploadifyError {
+	background-color: #FDE5DD !important;
+	border: 2px solid #FBCBBC !important;
+}
+.uploadifyQueueItem .cancel {
+	float: right;
+}
+.uploadifyQueue .completed {
+    font-size: 14px;
+    font-weight: bold;
+}
+.uploadifyProgress {
+	background-color: #E5E5E5;
+	margin-top: 10px;
+	width: 100%;
+}
+.uploadifyProgressBar {
+	background-color: #0099FF;
+	height: 3px;
+	width: 1px;
+}
+
+
+.qq-uploader {
+	border: 1px solid #BBB;
+	background: -webkit-linear-gradient(rgba(255, 255, 255, 0), white);
+	height: 40px;
+	color: #888;
+	overflow: hidden;
+	position: relative;
+	border-radius: 2px;
+	font-size: 12px;
+	-moz-box-shadow: 0px 1px 0px white, rgba(0, 0, 0, .35) 0px 4px 5px -5px inset;
+	-webkit-box-shadow: 0px 1px 0px white, rgba(0, 0, 0, .35) 0px 4px 5px -5px inset;
+	box-shadow: 0px 1px 0px white, rgba(0, 0, 0, .35) 0px 4px 5px -5px inset;
+	-webkit-background-clip: padding-box;
+}
+
+.qq-upload-button {
+    /*display:block;  or inline-block 
+    width: 105px; padding: 7px 0; text-align:center; */   
+
+	float: right; 
+	margin: 0px;
+	padding: 0 20px;
+	height: 100%;
+	border: none;
+	border-left: 1px solid #bbb;
+	font: bold 12px HelveticaNeue, Helvetica, Arial, sans-serif;
+	text-shadow:white 0px 1px 0px;
+	line-height: 40px;
+	-webkit-box-shadow: rgba(255,255,255,0.7) 0px 1px 0px inset, white 0px 1px 0px;
+	-moz-box-shadow: rgba(255,255,255,0.7) 0px 1px 0px inset, white 0px 1px 0px;
+	box-shadow: rgba(255,255,255,0.7) 0px 1px 0px inset, white 0px 1px 0px;
+	
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border-bottom-right-radius: 0px;
+
+	color: #888;
+	width:50px;
+	text-align:center;
+	position:absolute;
+	left:457px;
+
+	background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.2));
+	background-image: -moz-linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.2));
+}
+.qq-upload-button-hover {background-color: rgba(0,0,0,0.1);}
+.qq-upload-button-focus {}
+
+.qq-upload-drop-area {
+}
+.qq-upload-drop-area span {
+}
+.qq-upload-drop-area-active {background:#FF7171;}
+
+.qq-upload-list {margin: 0; padding:0; list-style:none; float:left; width:550px; }
+.qq-upload-list li { 
+	list-style:none;
+    padding: 0 0 0 7px;
+	line-height:40px;
+	font-family: HelveticaNeue-Light, HelveticaNeue, Helvetica, Arial, sans-serif
+}
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
+    margin-right: 7px;
+}
+
+.qq-upload-file { width: 280px; text-overflow: ellipsis; overflow: hidden; display:block; float: left;}
+.qq-upload-spinner {display:block; background: url("../images/loading.gif"); width:15px; height:15px; vertical-align:text-bottom;float:left; margin-top:12px;}
+.qq-upload-size{font-size:11px;
+display:block;
+width:100px;
+float:left;
+}
+.qq-upload-cancel {
+	float: right; 
+	margin: 0px;
+	padding: 0 20px;
+	height: 100%;
+	border: none;
+	border-left: 1px solid #bbb;
+	font: bold 12px HelveticaNeue, Helvetica, Arial, sans-serif;
+	text-shadow:white 0px 1px 0px;
+	line-height: 40px;
+	-webkit-box-shadow: rgba(255,255,255,0.7) 0px 1px 0px inset, white 0px 1px 0px;
+	-moz-box-shadow: rgba(255,255,255,0.7) 0px 1px 0px inset, white 0px 1px 0px;
+	box-shadow: rgba(255,255,255,0.7) 0px 1px 0px inset, white 0px 1px 0px;
+	
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border-bottom-right-radius: 0px;
+
+	color: #888;
+	cursor:pointer;
+	width:50px;
+	text-align:center;
+
+	background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.2));
+	background-image: -moz-linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.2));
+}
+.qq-upload-cancel:hover {background-color: rgba(0,0,0,0.1);}
+.qq-upload-failed-text {display:none;}
+.qq-upload-fail .qq-upload-failed-text {display:block;}
+
+
+
+#agenciesplanlimit{ font-size: 20px; font-weight: bold; }
+.numberofagencies{	font-size: 20px; font-weight: bold; }
+
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   speak for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 0, 0, 0, .3 ) 
+                url('../images/pIkfp.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+#fileuploader {
+	width:550px;
+	margin-top:10px;
+}
+.cleardiv {
+	clear:both;
+}

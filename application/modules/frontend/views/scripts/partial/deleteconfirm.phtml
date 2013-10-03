@@ -1,0 +1,27 @@
+<div class="faded_bg" id="content_delete_popup">
+<div class="popups_edit">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right" onclick="div_sataus('<?php echo $this->div;?>');">
+                        <a href="#"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="delete_popup_inner">
+                            <div class="lets_add_heading">Are you sure you want to delete this?</div>
+                            <div class="no_btn" onclick="div_sataus('<?php echo $this->div;?>');"><a href="#">no</a></div>
+                            <div class="yes_btn" onclick="deleteAccountRecord('<?php echo $this->id;?>','<?php echo $this->fn;?>');"><a href="#" >yes</a></div>
+                            <div class="clear"></div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>

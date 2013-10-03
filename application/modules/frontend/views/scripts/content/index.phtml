@@ -1,0 +1,485 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#content").tabs();
+  });
+  </script>
+
+<script type="text/javascript" charset="utf-8">
+  $(function(){
+    $("input#upload, input#saying, input#sending, select ").uniform();
+  });
+</script>
+<script type="text/javascript">
+function resetordermode(fieldid) {
+	$("#sortmode").val("DESC");
+	$("#"+fieldid+"_activity").attr("class","sortdown");
+	$("#sortfield").val(fieldid+"_activity");
+}
+$(function(){
+    $(".fields").watermarkify();
+	getEventData('event','res_c1',1);
+    $(".sortablecolumn span").click(function(){
+        //console.log($(this).attr("id"));
+        $(".sortablecolumn span").attr("class","");
+        if($("#sortmode").val() == "DESC") {
+            $(this).attr("class","sortup");
+            $("#sortmode").val("ASC");
+        } else {
+            $(this).attr("class","sortdown");
+            $("#sortmode").val("DESC");
+        }
+        $("#sortfield").val($(this).attr("id"));
+        refechpage();
+    });
+	$(".start_date_input" ).datepicker();
+	var uploader = new qq.FileUploader({
+		element: document.getElementById('fileuploader'),
+		action: '/content/uploadeventimage',
+		debug: false,
+		sizeLimit: 1044000000,
+		onComplete: function(id, fileName, responseJSON){
+			$("#event_filename").val(responseJSON.filename);
+		}
+	});
+});
+</script>
+<script type="text/javascript">
+$(function(){
+$("#search_box_job").hide();
+$("#event12").click(function(){
+$("#add").hide();
+$("#res").show();
+$("#search_box_job").hide();
+$("#search_box_event").show();
+
+/*$("#content").find(".left_nav").removeClass("left_nav").addClass("left_nav_active1");
+$("#content").find(".left_nav_active1").removeClass("left_nav_active1").addClass("left_nav");*/
+});
+
+/*$("#left_nav_active").mouseover(function(){
+$("#content").find(".left_nav_active").removeClass("left_nav_active").addClass("remove_color");
+})
+$("#left_nav_active").mouseout(function(){
+$("#content").find(".remove_color").removeClass("remove_color").addClass("left_nav_active");
+})
+
+$("#left_nav").mouseover(function(){
+$("#content").find(".left_nav").removeClass("left_nav").addClass("remove_color1");
+})
+
+$("#left_nav").mouseout(function(){
+$("#content").find(".remove_color1").removeClass("remove_color1").addClass("left_nav");
+})*/
+
+
+$("#job12").click(function(){
+$("#res").hide();
+$("#add").show();
+$("#search_box_job").show();
+$("#search_box_event").hide();
+
+/*$("#content").find(".left_nav").removeClass("left_nav").addClass("left_nav_active1");
+$("#content").find(".left_nav_active").removeClass("left_nav_active").addClass("left_nav");*/
+
+$("#paging_event").hide();
+});
+});
+
+
+
+function activeImage(id)
+{
+    document.getElementById(id).style.backgroundImage = "url(images/add_content_cal.png)";
+    document.getElementById('add_button_active').style.backgroundImage ="url(images/add_content_buttton.png)";
+}
+function activeImage_help(id)
+{
+    document.getElementById(id).style.backgroundImage = "url(images/rollover03.png)";
+    document.getElementById('add_button_active').style.backgroundImage ="url(images/add_content_buttton.png)";
+}
+
+
+</script>
+
+
+<style type="text/css">
+#fl {    
+    background:url(images/add_content_cal_active.png);
+    width:114px;
+    height:127px;
+    cursor:pointer;
+}
+#fl:hover {    
+    background:url(images/rollover01.png);
+    width:114px;
+    height:127px;
+    cursor:pointer;
+}
+#fr {
+    background:url(images/help_wanted.png);
+    width:167px;
+    height:138px;
+    cursor:pointer;
+}
+#fr:hover {
+    background:url(images/rollover02.png);
+    width:167px;
+    height:138px;
+    cursor:pointer;
+}
+</style>
+
+<!-- popups start here -->
+<div class="faded_bg" id="add_new_job_event_popup" style="display:none;">
+    <div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                    
+                        <div class="event_popup_inner">
+                            <div class="popup_baord_strip" style="height:30px!important;">
+                    <div class="popup_baord_left"style="height:30px!important;"><h1>Add New Event</h1></div>
+                    <div class="popup_baord_right" onclick="div_sataus('add_new_job_event_popup')"style="height:20px!important;">
+                        <a href="#"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+			<div class="event_select">
+				<form name="job_select"  id="job_select">
+					<input type="radio" name="radio" id="saying" checked="checked"  onclick="eventdetails()"/> Event&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="radio" id="sending"  onclick="jobdetails()"/> Job
+				</form>
+				<div id="event_con">
+					<div id="eventdetails" style="display:block">
+						<form id="eventdetailform" name="eventdetailform">
+						<div style="height:10px; clear:both; width:100%" ></div>
+						<div class="input_area">
+							<label class="left">
+								<!--<select name="event_mall"  id="mall" onchange="getStoreListForCombo(this.value);">-->
+								<select name="event_mall"  id="mall" >
+								<option value="">Select Mall</option>
+								<?php foreach($this->data['mall_list'] as $mall):?>
+								<option value="<?php echo $mall['id'];?>"><?php echo $mall['label'];?></option>
+								<?php endforeach;?>
+								</select>
+							</label>
+							<!--<label class="right" id="storelistcombo"> <select name="event_store" id="store"></select></label>-->
+							<div class="clear"></div>
+							<input type="text" name="event_name" id="event_name" class="event_input fields" value="" title="Event Name"/>
+						</div>
+						<div class="text_area">
+							<textarea rows="0" title="Enter your Address" class="description_input fields" name="event_desc" id="event_desc"  cols="0" onclick="removeError('des_error')"></textarea>
+						</div>
+						<div class="datearea">
+							<div class="left_side">
+								<input type="text" name="event_start_date_input" id="event_start_date_input" class="start_date_input fields" value="" title="Start Date"/>
+								<!--<label><input type="text" name="start_mm" id="start_mm" maxlength="2"  class="start_date_input fields" onclick="removeError('des_error')" title="Start Date" /></label>
+								<label><input type="text" name="start_dd" id="start_dd" maxlength="2" class="start_date_input" value=""/></label>
+								<label><input type="text" name="start_yy" id="start_yy" maxlength="4"class="start_date_input" value=""/></label>
+								<div class="calender_icon">
+								<span id="month_error" style="color:#FF0000;"></span>
+								<input name="btn_img" type="image" src="images/calender_bg.png" id="txtcal" onclick="removeError('month_error')"/>
+								</div>-->
+							</div>
+							<div class="left_side" style="margin-left:16px">
+								<input type="text" name="event_end_date_input" id="event_end_date_input" class="start_date_input fields" value="" title="End Date"/>
+								<!--<label><input type="text" name="end_mm" id="end_mm" class="start_date_input fields"  title="End Date"/></label>
+								<label> <input type="text" name="end_dd" id="end_dd" class="start_date_input" /></label>
+								<label> <input type="text" name="end_yy" id="end_yy" class="start_date_input" /></label>
+								<div class="calender_icon">
+								<span id="endmonth_error" style="color:#FF0000;"></span>
+								<input name="btn_img" type="image" src="images/calender_bg.png" id="txtcal2" onclick="removeError('endmonth_error')"/>
+								</div>-->
+							</div>
+						</div>
+						<div class="input_area">
+							<label class="left"><input name="event_twitter_name" type="text" id="event_twitter_name"  class="mall_store fields"  value="" title="Twitter @Name"/></label>
+							<label class="right"> <input name="event_twitter_hash" type="text"  id="event_twitter_hash" class="mall_store fields" value=""  title="Twitter #Hashtag" /></label>
+							<input type="hidden" value="" id="event_filename" name="event_filename" class="required-entry" />
+							<div class="clear"></div>
+							<!--<div class="upload_img">
+								<label class="uplaat_text">Upload an Images</label>
+								<input type="file" id="upload" /
+							</div>>-->
+						</div>
+						</form>
+						<form id="uploadfiles" name="uploadfiles" method="POST" enctype="multipart/form-data" action="" >
+							<div id="fileuploader">
+								<noscript>
+								<p>Please enable JavaScript to use file uploader.</p>
+								<!-- or put a simple form for upload here -->
+								</noscript>
+							</div>
+						</form>
+					</div>
+					<div id="jobdetails" style="display:none">
+						<form id="jobdetailform" name="jobdetailform">
+						<div style="height:10px; clear:both; width:100%" ></div>
+                            <div class="input_area">
+								<label class="left">
+									<select name="job_mall"  id="job_mall" onchange="getStoreListForCombo(this.value, 'job_store');">
+									<!--<select name="job_mall"  id="job_mall" >-->
+									<option value="">Select Mall</option>
+									<?php foreach($this->data['mall_list'] as $mall):?>
+									<option value="<?php echo $mall['id'];?>"><?php echo $mall['label'];?></option>
+									<?php endforeach;?>
+									</select>
+								</label>
+								<label class="right" id="storelistcombo"><select name="job_store" id="job_store"><option value=''>Select Store (Optional)</option></select></label>
+								<!--<label class="left"><input name="job_mall" type="text" id="mall"  class="mall_store fields"  value="" title="Select shopping Mall"/></label>
+								<label class="right"> <input name="job_store" type="text"  id="store" class="mall_store fields" value=""  title="Select Store (Optional)" /></label>-->
+								<div class="clear"></div>
+								<input type="text" name="job_title" id="job_title" class="event_input fields" value="" title="Job Title"/>
+								<div  style="width:100%; height:10px; clear:both;"></div>
+								<input type="text" name="job_refnumber" id="job_refnumber" class="event_input fields" value="" title="Job Reference Number" />
+		                    </div>
+			            <div class="text_area">
+							<textarea rows="0" title="Description" class="description_input fields" name="job_desc" id="job_desc"  cols="0" onclick="removeError('des_error')"></textarea>
+							<textarea rows="0" title="Experience" class="description_input fields" name="job_experience" id="job_experience"  cols="0" onclick="removeError('des_error')"></textarea>
+						</div>
+						<div class="datearea">
+							<div class="lets_add_heading" style=" width:100%; margin:5px 0 0 0;">Closing Date (if applicable, otherwise your post will be up for 60 days)</div>
+							<div class="left_side" style="margin:5px 0;">
+								<input type="text" name="job_close_date_input" id="job_close_date_input" class="start_date_input fields" value="" title="Closing Date"/>
+								<!--<label><input type="text" name="start_mm" id="mm" maxlength="2"  class="start_date_input fields" onclick="removeError('des_error')" title="Start Date" /></label>
+								<label><input type="text" name="start_dd" id="dd" maxlength="2" class="start_date_input" value=""/></label>
+								<label><input type="text" name="start_yy" id="yyyy" maxlength="4"class="start_date_input" value=""/></label>
+								<div class="calender_icon">
+								<span id="month_error" style="color:#FF0000;"></span>
+								<input name="btn_img" type="image" src="images/calender_bg.png" id="edit_jobimg" onclick="removeError('month_error')"/>
+								</div>-->
+							</div>
+						</div>
+						</form>
+					</div>
+					<div class="clear"></div>
+					<div class="cancel_btn fl" onclick="div_sataus('add_new_job_event_popup')">cancel</div>
+					<div class="save_btn fr" onclick="return addNewContentData()">
+						<!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->
+						<a href="#" class="savef">save</a>
+					</div>
+					<input  type="hidden" name="activeForm" id="activeForm" value="eventdetailform"/>
+
+					</div>
+                    </div>
+                            <!--<div class="lets_add_heading">&nbsp;</div>
+                            <div class="add_button_active" id="add_button_active" onclick="div_sataus('add_new_job_event_popup')"><a href="#">add</a></div>-->
+					</div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+<!-- popups end here -->
+<!-- EDIT EVENT POPUP FOR ADD NEW EVENT -->
+<div id="edit_event_modal_admin_popup" class="popups"></div>
+<!-- EDIT EVENT POPUP END --> 
+
+<!-- EDIT JOB FOR EDIT EVENT -->
+<div id="edit_job_admin_modal_popup" class="popups"></div>
+<!-- EDIT JOB FOR EDIT EVENT  END-->  
+
+<!-- CONFIRM DELETE POPUP -->
+<div id="content_delete_popup" class="popups" style="display:none"></div>
+<!-- CONFIRM DELETE POPUP -->
+<!-- DELETE SUCCESSFULL POPUP -->
+<div class="faded_bg" id="content_delete_successfull_popup" style="display:none;">
+<div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right">
+<a href="#" onclick="div_sataus('content_delete_successfull_popup')"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="add_content_inner">
+                            <div class="lets_add_heading">Delete successful!</div>
+          <div class="add_button"><a href="#" onclick="div_sataus('content_delete_successfull_popup')">close</a></div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--faded_bg ends-->
+
+
+<!-- DELETE SUCCESS FULLPOPUP -->
+
+<!--SAVE FORM SUCCESAS START-->
+<div class="faded_bg" id="save-form-content" style="display:none;">
+<div class="popups_edit1">
+  <div id="saved_successfully_popup" class="popups">
+    <div class="popup_top"></div>
+    <div class="popup_bottom">
+      <div class="popup_mid">
+        <div class="popup_baord_strip">
+          <div class="popup_baord_left"></div>
+          <div class="popup_baord_mid"></div>
+          <div class="popup_baord_right" onclick="div_sataus('save-form-content')"> <a href="#"><img src="images/close_popup.png" alt="" /></a> </div>
+          <div class="clear"></div>
+        </div>
+        <div class="popup_box_patttern">
+          <div class="popup_paper_strip">
+            <div class="add_content_inner">
+              <div class="lets_add_heading">Form saved successfully!</div>
+              <div class="add_button" onclick="div_sataus('save-form-content')"><a href="#" onclick="countRecords();">close</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!--faded_bg ends-->
+<!-- SAVE FORM SUCCESS END -->
+
+<!-- ADD NEW EVENT POPUP -->
+
+<script type="text/javascript">
+$(function() {
+        $('#txtcal').datepicker({
+    onSelect: function(dateText, inst) {
+        var pieces = dateText.split('/');
+        $('#start_mm').val(pieces[0]);
+        $('#start_dd').val(pieces[1]);
+        $('#start_yy').val(pieces[2]);
+    }
+})
+});
+$(function() {
+        $('#txtcal2').datepicker({
+    onSelect: function(dateText, inst) {
+        var pieces = dateText.split('/');
+        $('#end_mm').val(pieces[0]);
+        $('#end_dd').val(pieces[1]);
+        $('#end_yy').val(pieces[2]);
+    }
+})
+$("#searchValue").keypress(function(e){
+ if(e.which == 13)
+ $("#search_img").click();
+});
+});
+
+$(function() {
+    $( "#edit_jobimg" ).datepicker({
+     onSelect: function(dateText, inst) {
+     var pieces = dateText.split('/');
+       $('#mm').val(pieces[0]);
+        $('#dd').val(pieces[1]);
+        $('#yyyy').val(pieces[2]);
+        }
+})
+});
+
+</script>
+
+
+
+    <!-- leftpannel start here -->
+    <div class="leftpannel">
+    
+<!-- search Box Start -->    
+      <div class="search_box" id="search_box_event">
+        <div class="search_input_box">
+          <div class="search_btn">
+            <input type="image" src="images/search_btn.png" id="search_img" onclick="searchValue('searchValue');"  />
+          </div>
+          <div class="search_input">
+            <input type="text" class="search_input" value="" id="searchValue" placeholder="Search event"  />
+          </div>
+          <div><input type="button" class="reset" name="reset" id="reset_event" value="" onclick="resetRecords('reset_event');" /></div> 
+          <div class="clear"></div>
+        </div>
+      </div>
+      <!--<div class="search_box" id="search_box_job">
+        <div class="search_input_box">
+          <div class="search_btn">
+            <input type="image" src="images/search_btn.png" id="search_img" onclick="searchValue_jobs('searchValue_jobs');"  />
+          </div>
+          <div class="search_input">
+            <input type="text" class="search_input" value="" id="searchValue_jobs" placeholder="Search Jobs"  />
+          </div>
+          <div><input type="button" class="reset" name="reset" id="reset_jobs" value="reset" onclick="resetJobs('reset_jobs');" /></div> 
+          <div class="clear"></div>
+        </div>
+      </div>-->
+<!-- search box End -->     
+       <ul>
+        <li><a href="#res_c1" class='basic' id="event12" onclick="resetordermode('resc1');$('#curcategory').val('event');getEventData('event','res_c1',1);" ><span class="img_tab">Event</span><span class="count_all"><?php
+        echo $this->data['content_status']['events'];
+        
+        ?></span></a></li>
+        
+        <li><a href="#res_c2" class='basic' id="event12" onclick="resetordermode('resc2');$('#curcategory').val('job');getJobData('job','res_c2',1);" ><span class="img_tab_job">Jobs</span><span class="count_all">          <?php
+            echo $this->data['content_status']['jobs'];   
+            ?>
+        
+        </span></a></li>        
+       
+       </ul>
+   
+      
+      <div class="add_content_button" onclick="div_sataus('add_new_job_event_popup')">add content</div>
+    </div>
+    <!--rightpanel start here -->
+    <div class="rightpannel">
+      <div class="right_nav" id="res_c1">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr class="right_top_nav">
+            <td width="10%" scope="col" class="sortablecolumn">&nbsp;</td>
+            <td width="14%" scope="col" class="sortablecolumn"><span id="resc1_eventname">Event Name</span></td>
+            <td width="15%" scope="col" class="sortablecolumn"><span id="resc1_shoppingmall">Shopping Mall</span></td>
+            <td width="10%" scope="col" class="sortablecolumn"><span id="resc1_startdate">Start Date</span></td>
+            <td width="12%" scope="col" class="sortablecolumn"><span id="resc1_enddate">End Date</span></td>
+            <td width="10%" scope="col" class="sortablecolumn"><span id="resc1_atendees">Atendees</span></td>
+            <td width="11%" scope="col">Views</td>
+            <td width="7%" scope="col">ETA</td>
+            <td width="4%">&nbsp;</td>
+            <td width="7%">&nbsp;</td>
+          </tr>  
+		</table>
+      </div>
+<!--<div style="text-align:center" id="paging_event">
+      <?php
+       /* for($i=1; $i<=$total_pages; $i++)
+        {
+         echo '<a href="#" id='.$i.' class="pagination" onclick="return pagination('.$i.');" style="text-decoration:none;">&nbsp;'.$i.'&nbsp;</a>';
+        } */
+        ?>
+</div>-->
+<!--res-->
+<!-- ================================ ADD NEW JOB RESULT SECRION START ========================== -->
+<div class="right_nav" id="res_c2" >
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+	  <tr class="right_top_nav">
+		<td width="14%" scope="col" align="center" class="sortablecolumn"><span id="resc2_jobrefno">Job Reference No.</span></td>
+		<td width="14%" scope="col" class="sortablecolumn"><span id="resc2_jobtitle">Job Title</span></td>
+		<td width="18%" scope="col" class="sortablecolumn"><span id="resc2_shoppingmall">Shopping Mall</span></td>
+		<td width="9%" scope="col" >Store</td>
+		<td width="9%" scope="col" >Views</td>
+		<td width="14%" scope="col" class="sortablecolumn"><span id="resc2_enddate">End Date</span></td>
+		<td width="8%" scope="col" class="sortablecolumn"><span id="resc2_daysleft">Days Left</span></td>
+		<td width="7%" class="sortablecolumn">&nbsp;</td>
+		<td width="7%" class="sortablecolumn">&nbsp;</td>
+	  </tr>
+	</table>
+</div>      
+<!-- ================================ ADD NEW JOB RESULT SECRION END ========================== -->            
+<div id="editrec"></div>
+    <input type="hidden" id="curcategory" value="event" />
+    <input type="hidden" id="sortmode" value="ASC" />
+    <input type="hidden" id="sortfield" value="" />
+	<input type="hidden" id="cntperpage" value="25" />
+    </div>
+    <!-- rightpanel end here -->
+  

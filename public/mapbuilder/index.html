@@ -1,0 +1,847 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Mall Rat</title>
+<link rel="stylesheet" href="css/styles.css" media="screen" />
+<script type="text/javascript" src="js/jquery1.7.js"></script>
+<script>
+	
+	var leftB = 1;
+	var rightB = 1;
+	
+	function load()
+	{	
+		document.getElementById('ek').style.display = 'none';
+		document.getElementById('do').style.display = 'none';
+		document.getElementById('ten').style.display = 'block';
+		document.getElementById('char').style.display = 'block';
+	}
+    function hideLeft() {    
+		document.getElementById('left-bars').style.display = 'none';
+		document.getElementById('ek').style.display = 'block';		
+		document.getElementById('ek').style.marginLeft = '-33.3%';
+		document.getElementById('content').style.paddingLeft = '20%'; 
+		document.getElementById('ten').style.display = 'none';
+		leftB = 0;
+	}
+	function hideRight() {    
+		document.getElementById('right-bar').style.display = 'none';
+		document.getElementById('do').style.display = 'block';	
+		document.getElementById('do').style.marginRight = '-33.3%';
+		document.getElementById('content').style.paddingRight = '20%'; 
+		document.getElementById('char').style.display = 'none';
+		rightB = 0;
+	}
+	function shLeft() {    
+		document.getElementById('left-bars').style.display = 'block';
+		document.getElementById('content').style.padding = '0%';  
+		document.getElementById('ten').style.display = 'block';
+		document.getElementById('ek').style.display = 'none';
+		leftB = 1; 
+		if(rightB == 0){			
+			document.getElementById('do').style.marginRight = '-33.3%';
+			document.getElementById('content').style.paddingRight = '20%';
+		}
+	}
+	function shRight() {    
+		document.getElementById('right-bar').style.display = 'block'; 
+		document.getElementById('content').style.padding = '0%'; 
+		document.getElementById('char').style.display = 'block';
+		document.getElementById('do').style.display = 'none'; 
+		rightB = 1;
+		if(leftB == 0){
+			document.getElementById('ek').style.marginLeft = '-33.3%';
+			document.getElementById('content').style.paddingLeft = '20%'; 
+		}
+	}
+	
+</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// Store variables
+			var accordion_head = $('.accordion > li > a'),
+				accordion_body = $('.accordion li > .sub-menu');
+			// Open the first tab on load
+			accordion_head.first().addClass('active').next().slideDown('normal');
+			// Click function
+			accordion_head.on('click', function(event) {
+				// Disable header links
+				event.preventDefault();
+				// Show and hide the tabs on click
+				if ($(this).attr('class') != 'active'){
+					accordion_body.slideUp('normal');
+					$(this).next().stop(true,true).slideToggle('normal');
+					accordion_head.removeClass('active');
+					$(this).addClass('active');
+				}
+			});
+		});
+	</script>    
+    <script type="text/javascript">
+		$(document).ready(function(){
+		   initTabs();
+		 });
+		function initTabs() {
+			$('#tabMenu a').bind('click',function(e) {
+				e.preventDefault();
+				var thref = $(this).attr("href").replace(/#/, '');
+				$('#tabMenu a').removeClass('active');
+				$(this).addClass('active');
+				$('#tabContent div.content').removeClass('active');
+				$('#'+thref).addClass('active');
+			});
+		}
+	</script>  
+    <script type="text/javascript" src="js/collapsible_menu.js"></script>
+    <script type="text/javascript" src="js/javascript.js"> </script>
+    <script type="text/javascript" src="js/jquery.mousewheel.min.js" ></script>
+        <script type="text/javascript" src="js/jquery.iviewer.js" ></script>
+        <script type="text/javascript">
+            var $ = jQuery;
+            $(document).ready(function(){
+                  $("#viewer").iviewer(
+                       {
+                       src: "images/test_image.jpg", 
+                       update_on_resize: false,
+                       initCallback: function ()
+                       {
+                           var object = this;
+                           $("#in").click(function(){ object.zoom_by(1);}); 
+                           $("#out").click(function(){ object.zoom_by(-1);}); 
+                           $("#fit").click(function(){ object.fit();}); 
+                           $("#orig").click(function(){  object.set_zoom(100); }); 
+                           $("#update").click(function(){ object.update_container_info();});
+                       },
+                       onMouseMove: function(object, coords) { },
+                       onStartDrag: function(object, coords) { return false; }, //this image will not be dragged
+                       onDrag: function(object, coords) { }
+                  });
+            });
+        </script>      
+        <!-- the mousewheel plugin -->
+		<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+		<!-- the mwheelIntent plugin -->
+		<script type="text/javascript" src="js/mwheelIntent.js"></script>
+		<!-- the jScrollPane script -->
+		<script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
+
+		<script type="text/javascript" id="sourcecode">
+			$(function()
+			{
+				$('.scroll-pane').jScrollPane();
+				$('.horizontal-pane-big').jScrollPane();
+			});
+		</script>
+        <link type="text/css" href="css/scroller.css" rel="stylesheet" media="all" />  
+        
+                            
+    <script type='text/javascript'>
+      var dnd = {
+        ready : function()
+        {        
+          $('div#uploadTarget')
+            .bind(
+              'dragenter',
+              function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            )
+            .bind(
+              'dragover',
+              function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            )
+            .bind(
+              'drop',
+              function(e) {
+                if (e.originalEvent.dataTransfer.files.length) {
+                  e.preventDefault();
+                  e.stopPropagation();
+    
+                  dnd.createFileQueue(e.originalEvent.dataTransfer.files);
+                  dnd.upload(e.originalEvent.dataTransfer.files);
+                }
+              }
+            );
+        },
+        
+        createFileQueue : function(files)
+        {
+          $('tbody#uploadQueue').find('tr').not('.uploadTemplate').remove();
+        
+          $(files).each(
+            function(key, file) {
+              var tr = $('tr.uploadTemplate').clone();
+            
+              tr.removeClass('uploadTemplate');
+              tr.attr('id', 'file-' + key);
+              
+              if (file.type.match(new RegExp('/image.*/')) && FileReader) {
+                // Displaying a thumbnail doesn't seem to work in Safari
+                var img = document.createElement('img');
+                img.file = value;
+                img.classList.add('thumbnail');
+      
+                tr.find('tr').eq(0).html(img);
+      
+                var reader = new FileReader();
+        
+                reader.onload = (function(img) {
+                  return function(e) {
+                    img.src = e.target.result;
+                  };
+                })(img);
+            
+                reader.readAsDataURL(value);
+              }
+              
+              tr.find('td').eq(1).html(file.name);
+              tr.find('td').eq(2).html(dnd.getFileSize(file.size));
+    
+              $('tbody#uploadQueue').append(tr);
+            }
+          );
+        },
+    
+        upload : function(files)
+        {
+          // This is a work-around for Safari occaisonally hanging when doing a 
+          // file upload.  For some reason, an additional HTTP request for a blank
+          // page prior to sending the form will force Safari to work correctly.
+    
+          $.get('/file/blank.html');
+        
+          var http = new XMLHttpRequest();
+          
+          $('div#uploadProgress > div > div').css('width', 0);
+          
+          /*$('div#uploadComplete').fadeOut(
+            'normal',
+            function() {
+              $('div#uploadProgress').fadeIn();
+            }
+          );*/
+    
+          if (http.upload && http.upload.addEventListener) {
+            http.upload.addEventListener(
+              'progress',
+              function(e) {
+                if (e.lengthComputable) {
+                  var progress = Math.round((e.loaded * 100) / e.total);  
+                  var progressDiv = $('div#uploadProgress > div > div');
+
+                  progressDiv.css('width', progress + '%');  
+                }
+              },
+              false
+            );
+
+            http.upload.addEventListener(
+              'load',
+              function(e) {
+                $('div#uploadProgress > div > div')
+                  .css('width', '100%');
+
+                $('div#uploadProgress').fadeOut(
+                  'normal',
+                  function() {
+                    $('div#uploadComplete').fadeIn();
+                  }
+                );
+              }
+            );
+          }
+    
+          if (typeof(FormData) != 'undefined') {
+            var form = new FormData();
+    
+            form.append('path', '/');
+      
+            for (var i = 0; i < files.length; i++) {
+              form.append('file[]', files[i]);
+            }
+    
+            http.open('POST', '/file/upload.php');
+            http.send(form);
+          } else {
+            alert('Your browser does not support standard HTML5 Drag and Drop');
+          }
+        },
+     
+        getFileSize : function(bytes)
+        {
+          switch (true) {
+            case (bytes < Math.pow(2,10)): {
+              return bytes + ' Bytes';
+            };
+            case (bytes >= Math.pow(2,10) && bytes < Math.pow(2,20)): {
+              return Math.round(bytes / Math.pow(2,10)) +' KB';
+            };
+            case (bytes >= Math.pow(2,20) && bytes < Math.pow(2,30)): {
+              return Math.round((bytes / Math.pow(2,20)) * 10) / 10 + ' MB';
+            };
+            case (bytes > Math.pow(2,30)): {
+              return Math.round((bytes / Math.pow(2,30)) * 100) / 100 + ' GB';
+            };
+          }
+        }
+      };
+    
+      $(document).ready(dnd.ready);
+    </script>
+    
+    <script type="text/javascript">
+		$("#hideLeft").click(function () {
+		  $("#section-navigation").toggle(2000);
+		});
+    </script>
+                  
+</head>
+
+<body onload="load();">
+<div id="container">
+	<div id="header">
+        <div id="navigation">
+            <ul>
+                <li><a href="#"><img src="images/select.png" /></a></li>
+                <li><a href="#"><img src="images/hand.png" /></li>
+                <li><a href="#"><img src="images/path.png" /></a></li>
+                <li><a href="#"><img src="images/split-screen.png" /></a></li>
+                <li><a href="#"><img src="images/trace-model.png" /></a></li>
+            </ul>
+        </div>
+        <div id="navigation2">
+            <ul>
+                <li><a href="#"><img src="images/save.png" /></a></li>
+                <li><a href="#"><img src="images/test.png" /></li>
+                <li><a href="#"><img src="images/done.png" /></a></li>
+                <li><a href="#"><img src="images/help.png" /></a></li>
+            </ul>
+        </div>
+	</div>
+	<div id="content-container1">
+		<div id="content-container2">
+			<div id="section-navigation">
+        	<div id="left-bars">
+                <ul id="VerColMenu">
+                    <li><a href="#">venues</a>
+                        <ul>
+                            <li><a href="#">venue</a></li>
+                            <li><a href="#">venue</a></li>
+                            <li><a href="#">venue</a></li>
+                            <li><a href="#">venue</a></li>
+                            <li><a href="#">venue</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">coquitlam centre</a>
+                        <ul>
+                        	<div class="imagesInfo">
+                            	<span class="infoA">order</span>
+                                <span class="infoB">file name</span>
+                                <span class="infoC">floor</span>
+                                <span class="infoD">start</span>
+                                <span class="infoE">&nbsp;</span>
+                            </div>                        	
+                            <div class='mapItem'>
+                            	<span class='infoA'>1</span>
+                                <span class='infoB'>test.svg</span>
+                                <span class='infoCc'>0</span>
+                                <span class='infoD'>
+                                	<input type='checkbox' />
+                                </span>
+                                <span class='infoE'>
+                                	<input type='button' class='delTempImg' />
+                                </span>
+                            </div>
+                            <div id="uploadTarget">
+                                <div id="filedrag">
+                                    Drag and Drop SVG file here to get started.
+                                </div>
+                            </div>
+				        </ul>
+                    </li>
+                    <li><a href="#">library</a>
+                        <ul>
+                        	<div class="scroll-pane">
+                            <div class="lib">
+                            	<span class="head-txt">STRUCTURAL</span>
+                                <div class="icon-struct">
+                                	<input type="button" class="libIcon" id="libA" />
+                                    <input type="button" class="libIcon" id="libB" />
+                                    <input type="button" class="libIcon" id="libC" />
+                                    <input type="button" class="libIcon" id="libD" />
+                                    <input type="button" class="libIcon" id="libE" />
+                                    <input type="button" class="libIcon" id="libF" />
+                                    <input type="button" class="libIcon" id="libG" />
+                                </div>
+                                <div class="lib-sep">&nbsp;</div>
+                                
+                                <span class="head-txt">AMENITY</span>
+                                <div class="icon-ament">
+                                	<input type="button" class="libIcon" id="libH" />
+                                    <input type="button" class="libIcon" id="libI" />
+                                    <input type="button" class="libIcon" id="libJ" />
+                                    <input type="button" class="libIcon" id="libK" />
+                                    <input type="button" class="libIcon" id="libL" />
+                                    <input type="button" class="libIcon" id="libM" />
+                                    <input type="button" class="libIcon" id="libN" />
+                                    <input type="button" class="libIcon" id="libO" />
+                                    <input type="button" class="libIcon" id="libP" />
+                                </div>
+                                <div class="lib-sep">&nbsp;</div>
+                            </div>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+			</div>
+            </div>
+			<div id="content">			
+            	<div class="imgNav">
+                	<div class="imgLeft" id="ten" align="center">
+                    	<a href="#" onclick="javascript:hideLeft();"><</a>
+                    </div>
+                    <div class="imgRight" id="char" align="center">
+                    	<a href="#" onclick="javascript:hideRight();">></a>
+                    </div>
+                    <div class="imgLeft" id="ek" align="center">
+                    	<a href="#" id="showLeft" onclick="javascript:shLeft();">></a>
+                    </div>
+                    <div class="imgRight" id="do" align="center">
+                    	<a href="#" id="showRight" onclick="javascript:shRight();"><</a>
+                    </div>
+                </div>
+                <!--<div id="onlyimage"></div>--> 
+                <div id="viewer" class="viewer"></div>  
+                <ul class="imgZoomer">
+                	<li>
+                    	<a id="in" href="#">
+                    		<img src="images/zoom-in.png" />
+                    	</a>
+                    </li>
+                    <li>
+                    	<a id="out" href="#">
+                    		<img src="images/zoom-out.png" />
+                    	</a>
+                    </li>
+                    <li>
+                    	<a id="fit" href="#">
+                    		<img src="images/origonal.png" />
+                    	</a>
+                    </li>
+                </ul>    
+			</div>
+            <div id="right-bar">
+            <div id="section-navigation">
+                <ul id="VerColMenu1">
+                    <li><a href="#">layers</a>
+                       <ul>
+                       	<div id="wrapper">
+                            <div class="accordionButton">
+                            	<span class="name">Amenity</span>
+                                <div class="colorPicker">
+                                	<img src="images/color-picker.png" />
+                                </div>
+                                <div class="percents">
+                                	<img src="images/percent.png" />
+                                </div>
+                                <div class="winBox">
+                                	<img src="images/win-off.png" />
+                                </div>
+                                <div class="eyeBox">
+                                	<img src="images/eye-off.png" />
+                                </div>
+                            </div>
+                            <div class="accordionContent">
+                            	<ul id="objList">
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="accordionButton">
+                            	<span class="name">Kiosk</span>
+                                <div class="colorPicker">
+                                	<img src="images/color-picker.png" />
+                                </div>
+                                <div class="percents">
+                                	<img src="images/percent.png" />
+                                </div>
+                                <div class="winBox">
+                                	<img src="images/win-off.png" />
+                                </div>
+                                <div class="eyeBox">
+                                	<img src="images/eye-on.png" />
+                                </div>
+                            </div>
+                            <div class="accordionContent">
+                            	<ul id="objList">
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="accordionButton">
+                            	<span class="name">Majors</span>
+                                <div class="colorPicker">
+                                	<img src="images/color-picker.png" />
+                                </div>
+                                <div class="percents">
+                                	<img src="images/percent.png" />
+                                </div>
+                                <div class="winBox">
+                                	<img src="images/win-off.png" />
+                                </div>
+                                <div class="eyeBox">
+                                	<img src="images/eye-on.png" />
+                                </div>
+                            </div>
+                            <div class="accordionContent">
+                            	<ul id="objList">
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="accordionButton">
+                            	<span class="name">Stores</span>
+                                <div class="colorPicker">
+                                	<img src="images/color-picker.png" />
+                                </div>
+                                <div class="percents">
+                                	<img src="images/percent.png" />
+                                </div>
+                                <div class="winBox">
+                                	<img src="images/win-on.png" />
+                                </div>
+                                <div class="eyeBox">
+                                	<img src="images/eye-on.png" />
+                                </div>
+                            </div>
+                            <div class="accordionContent">
+                            	<ul id="objList">
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="accordionButton">
+                            	<span class="name">Floors</span>
+                                <div class="colorPicker">
+                                	<img src="images/color-picker.png" />
+                                </div>
+                                <div class="percents">
+                                	<img src="images/percent.png" />
+                                </div>
+                                <div class="winBox">
+                                	<img src="images/win-off.png" />
+                                </div>
+                                <div class="eyeBox">
+                                	<img src="images/eye-on.png" />
+                                </div>
+                            </div>
+                            <div class="accordionContent">
+                            	<ul id="objList">
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="accordionButton">
+                            	<span class="name">Source</span>
+                                <div class="colorPicker">
+                                	<img src="images/color-picker.png" />
+                                </div>
+                                <div class="percents">
+                                	<img src="images/percent.png" />
+                                </div>
+                                <div class="winBox">
+                                	<img src="images/win-off.png" />
+                                </div>
+                                <div class="eyeBox">
+                                	<img src="images/eye-on.png" />
+                                </div>
+                            </div>
+                            <div class="accordionContent">
+                            	<ul id="objList">
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Object ID</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                       </ul>
+                    </li>
+                    <li><a href="#">stores</a>
+                        <ul>
+                            <li><a href="#">store</a></li>
+                            <li><a href="#">store</a></li>
+                            <li><a href="#">store</a></li>
+                            <li><a href="#">store</a></li>
+                            <li><a href="#">store</a></li>
+                        </ul>
+                    </li>
+                 </ul>
+			</div>
+            </div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

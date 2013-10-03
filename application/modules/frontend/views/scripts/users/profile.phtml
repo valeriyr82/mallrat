@@ -1,0 +1,569 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#contentt").tabs();
+    $(".fields").watermarkify();
+  });
+
+$(function(){
+$("#search_box_job").hide();
+$("#event12").click(function(){
+$("#add").hide();
+$("#res").show();
+$("#search_box_job").hide();
+$("#search_box_event").show();
+
+/*$("#content").find(".left_nav").removeClass("left_nav").addClass("left_nav_active1");
+$("#content").find(".left_nav_active1").removeClass("left_nav_active1").addClass("left_nav");*/
+});
+
+/*$("#left_nav_active").mouseover(function(){
+$("#content").find(".left_nav_active").removeClass("left_nav_active").addClass("remove_color");
+})
+$("#left_nav_active").mouseout(function(){
+$("#content").find(".remove_color").removeClass("remove_color").addClass("left_nav_active");
+})
+
+$("#left_nav").mouseover(function(){
+$("#content").find(".left_nav").removeClass("left_nav").addClass("remove_color1");
+})
+
+$("#left_nav").mouseout(function(){
+$("#content").find(".remove_color1").removeClass("remove_color1").addClass("left_nav");
+})*/
+
+
+$("#job12").click(function(){
+$("#res").hide();
+$("#add").show();
+$("#search_box_job").show();
+$("#search_box_event").hide();
+
+/*$("#content").find(".left_nav").removeClass("left_nav").addClass("left_nav_active1");
+$("#content").find(".left_nav_active").removeClass("left_nav_active").addClass("left_nav");*/
+
+$("#paging_event").hide();
+
+
+});
+});
+
+
+
+function activeImage(id)
+{
+    document.getElementById(id).style.backgroundImage = "url(images/add_content_cal.png)";
+    document.getElementById('add_button_active').style.backgroundImage ="url(images/add_content_buttton.png)";
+}
+function activeImage_help(id)
+{
+    document.getElementById(id).style.backgroundImage = "url(images/rollover03.png)";
+    document.getElementById('add_button_active').style.backgroundImage ="url(images/add_content_buttton.png)";
+}
+</script>
+<style type="text/css">
+#fl {    
+    background:url(images/add_content_cal_active.png);
+    width:114px;
+    height:127px;
+    cursor:pointer;
+}
+#fl:hover {    
+    background:url(images/rollover01.png);
+    width:114px;
+    height:127px;
+    cursor:pointer;
+}
+#fr {
+    background:url(images/help_wanted.png);
+    width:167px;
+    height:138px;
+    cursor:pointer;
+}
+#fr:hover {
+    background:url(images/rollover02.png);
+    width:167px;
+    height:138px;
+    cursor:pointer;
+}
+</style>
+
+<!-- popups start here -->
+<div class="faded_bg" id="add_new_job_event_popup" style="display:none;">
+    <div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right" onclick="div_sataus('add_new_job_event_popup')">
+                        <a href="#"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="add_content_inner">
+                            <div class="fl" id="fl" onclick="activeImage('fl')">&nbsp;</div>
+                            <div class="fr" id="fr" onclick="activeImage_help('fr')">&nbsp;</div>
+                            <div class="clear"></div>
+                            <div class="lets_add_heading">Lets add some new content!</div>
+                            <div class="add_button_active" id="add_button_active" onclick="div_sataus('add_new_job_event_popup')"><a href="#">add</a></div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+<!-- popups end here -->
+<!-- EDIT EVENT POPUP FOR ADD NEW EVENT -->
+<div id="edit_event_modal_admin_popup" class="popups">
+</div>
+<!-- EDIT EVENT POPUP END --> 
+
+<!-- EDIT JOB FOR EDIT EVENT -->
+<div id="edit_job_admin_modal_popup" class="popups"></div>
+<!-- EDIT JOB FOR EDIT EVENT  END-->  
+
+<!-- CONFIRM DELETE POPUP -->
+<div id="content_delete_popup" class="popups" style="display:none"></div>
+<!-- CONFIRM DELETE POPUP -->
+<!-- DELETE SUCCESSFULL POPUP -->
+<div class="faded_bg" id="content_delete_successfull_popup" style="display:none;">
+<div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right">
+<a href="#" onclick="div_sataus('content_delete_successfull_popup')"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="add_content_inner">
+                            <div class="lets_add_heading">Delete successful!</div>
+          <div class="add_button"><a href="#" onclick="div_sataus('content_delete_successfull_popup')">close</a></div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--faded_bg ends-->
+
+
+<!-- DELETE SUCCESS FULLPOPUP -->
+
+<!--SAVE FORM SUCCESAS START-->
+<div class="faded_bg" id="save-form-content" style="display:none;">
+<div class="popups_edit1">
+  <div id="saved_successfully_popup" class="popups">
+    <div class="popup_top"></div>
+    <div class="popup_bottom">
+      <div class="popup_mid">
+        <div class="popup_baord_strip">
+          <div class="popup_baord_left"></div>
+          <div class="popup_baord_mid"></div>
+          <div class="popup_baord_right" onclick="div_sataus('save-form-content')"> <a href="#"><img src="images/close_popup.png" alt="" /></a> </div>
+          <div class="clear"></div>
+        </div>
+        <div class="popup_box_patttern">
+          <div class="popup_paper_strip">
+            <div class="add_content_inner">
+              <div class="lets_add_heading">Form saved successfully!</div>
+              <div class="add_button" onclick="div_sataus('save-form-content')"><a href="#" onclick="countRecords();">close</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!--faded_bg ends-->
+<!-- SAVE FORM SUCCESS END -->
+
+<!-- ADD NEW EVENT POPUP -->
+
+<script type="text/javascript">
+$(function() {
+        $('#txtcal').datepicker({
+    onSelect: function(dateText, inst) {
+        var pieces = dateText.split('/');
+        $('#start_mm').val(pieces[0]);
+        $('#start_dd').val(pieces[1]);
+        $('#start_yy').val(pieces[2]);
+    }
+})
+});
+$(function() {
+        $('#txtcal2').datepicker({
+    onSelect: function(dateText, inst) {
+        var pieces = dateText.split('/');
+        $('#end_mm').val(pieces[0]);
+        $('#end_dd').val(pieces[1]);
+        $('#end_yy').val(pieces[2]);
+    }
+})
+$("#searchValue").keypress(function(e){
+ if(e.which == 13)
+ $("#search_img").click();
+});
+});
+
+$(function() {
+    $( "#edit_jobimg" ).datepicker({
+     onSelect: function(dateText, inst) {
+     var pieces = dateText.split('/');
+       $('#mm').val(pieces[0]);
+        $('#dd').val(pieces[1]);
+        $('#yyyy').val(pieces[2]);
+        }
+})
+});
+
+</script>
+<!-- ======================================== ADD NEW EVENT START ======================================================== -->
+<div id="add_new_event_modal_admin_popup" class="faded_bg" style="display:none;">
+<div class="popups_edit">
+    <div class="popup_top"></div>
+    <div class="popup_bottom">
+      <div class="popup_mid">
+        <div class="popup_baord_strip">
+          <div class="popup_baord_left"></div>
+          <div class="popup_baord_mid"></div>
+          <div class="popup_baord_right"> <a href="#" onclick="div_sataus('add_new_event_modal_admin_popup')"><img src="images/close_popup.png" alt="" /></a></div>
+          <div class="clear"></div>
+        </div>
+        <div class="popup_box_patttern">
+          <div class="popup_paper_strip">
+           
+              <div class="event_popup_inner">
+                <div class="add_event_heading">Add New Event</div>
+                <div class="select_box_outer fl">
+                  <div class="padding01">Select Shopping Mall</div>
+                  <div>
+                    <select id="mall">
+                    <option selected="selected">Select</option>
+                    <?php
+                    /*$str = "select shopping_mall,id from event";
+                     $res=mysql_query($str) or die(mysql_error());
+                     
+                     while($result=mysql_fetch_array($res))
+                     {
+                     ?>
+                     <option value="<?php echo $result['id'];?>"><?php echo $result['shopping_mall'];?></option>
+                     <?php
+                     }*/
+                    ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="select_box_outer fr">
+                  <div class="padding01">Select Store (Optional)</div>
+                  <div>
+                    <select id="store">
+                    <option selected="selected">Select</option>
+                    <?php 
+                    /*$query = "select id,store_optional from event";
+                     $res=mysql_query($query) or die(mysql_error());
+                    while($result1=mysql_fetch_array($res))
+                    {
+                    ?>
+                     <option  value="<?php echo $result1['id'];?>"><?php echo $result1['store_optional'];?></option>
+                     <?php
+                     } */
+                     ?>
+                     
+                    </select>
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div class="padding01">Event Name<span id="eve_error" style="color:#FF0000;"></span></div>
+                <div>
+     <input type="text" name="event_name" id="event_name" class="event_input" onclick="removeError('eve_error')"/>
+                </div>
+                <div class="padding01">Description<span id="des_error" style="color:#FF0000;"></span></div>
+                <div>
+                  <textarea rows="0" class="description_input" name="event_desc" id="event_desc"  cols="0" onclick="removeError('des_error')"></textarea>
+                </div>
+                <div class="padding01">Start Date</div>
+                <div class="start_date_outer">
+                  <div>
+                    <input type="text" name="start_mm" id="start_mm"  class="start_date_input" onclick="removeError('des_error')" />
+                  </div>
+                  <div class="padding01">MM</div>
+                </div>
+                <div class="start_date_sep"><span id="month_error" style="color:#FF0000;"></span><img src="images/date_sep.png" alt="" /></div>
+                <div class="start_date_outer">
+                  <div>
+                    <input type="text" name="start_dd" id="start_dd"  class="start_date_input" value=""/>
+                  </div>
+                  <div class="padding01">DD</div>
+                </div>
+                <div class="start_date_sep"><span id="month_error" style="color:#FF0000;"></span><img src="images/date_sep.png" alt="" /></div>
+                <div class="start_date_outer">
+                  <div>
+                    <input type="text" name="start_yy" id="start_yy" class="start_date_input" value=""/>
+                  </div>
+                  <div class="padding01">YYYY</div>
+                </div>
+                <div class="calender_icon"><span id="month_error" style="color:#FF0000;"></span><input name="btn_img" type="image" src="images/calender_icon.png" id="txtcal" onclick="removeError('month_error')"/></div>
+                <div class="clear"></div>
+                <div class="padding01">End Date</div>
+                <div class="start_date_outer">
+                  <div>
+                    <input type="text" name="end_mm" id="end_mm" class="start_date_input" />
+                  </div>
+                  <div class="padding01">MM</div>
+                </div>
+                <div class="start_date_sep"><span id="endmonth_error" style="color:#FF0000;"></span><img src="images/date_sep.png" alt="" /></div>
+                <div class="start_date_outer">
+                  <div>
+                    <input type="text" name="end_dd" id="end_dd" class="start_date_input" />
+                  </div>
+                  <div class="padding01">DD</div>
+                </div>
+                <div class="start_date_sep"><span id="endmonth_error" style="color:#FF0000;"></span><img src="images/date_sep.png" alt="" /></div>
+                <div class="start_date_outer">
+                  <div>
+                    <input type="text" name="end_yy" id="end_yy" class="start_date_input" />
+                  </div>
+                  <div>YYYY</div>
+                </div>
+                <div class="calender_icon"><span id="endmonth_error" style="color:#FF0000;"></span><input name="btn_img" type="image" src="images/calender_icon.png" id="txtcal2" onclick="removeError('endmonth_error')"/></div>
+                <div class="clear"></div>
+                <div class="padding01">Upload an image</div>
+                <div><a href="#"><img src="images/browse_btn.png" alt="" class="padding01" /></a></div>
+                <div class="select_box_outer fl">
+                  <div class="padding01">Twitter @Handle<span id="twitter_error" style="color:#FF0000;"></span></div>
+                  <div>
+                    <input class="twitter_input" name="twitter_handle" id="twitter_handle" type="text" onclick="removeError('twitter_error')"  />
+                  </div>
+                </div>
+                <div class="select_box_outer fr">
+                  <div class="padding01">Twitter #Hashtag<span id="hashtag_error" style="color:#FF0000;"></span></div>
+                  <div>
+                    <input class="twitter_input" name="twitter_Hashtag" id="twitter_Hashtag" type="text" onclick="removeError('hashtag_error')"  />
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div class="cancel_btn fl" onclick="div_sataus('add_new_event_modal_admin_popup')"><a href="#" class="">cancel</a></div>
+                <div class="save_btn fr" onclick="return addRecord()">
+                <!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->
+                  <a href="#" class="savef">save</a> </div>
+                <div class="clear"></div>
+              </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+</div>    
+</div>
+<!-- ======================================== ADD NEW EVENT START END ======================================================== --> 
+ <!-- ========================================ADD NEW JOB START ========================================================= -->
+<div id="add_new_job_admin_modal_popup" class="faded_bg" style="display:none;">
+<div class="popups_edit">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right" >
+                        <a href="#"  onclick="div_sataus('add_new_job_admin_modal_popup')"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="event_popup_inner">
+                            <div class="add_event_heading">Add New Job</div>
+                            <div class="select_box_outer fl">
+                                <div class="padding01">Select Shopping Mall</div>
+                                <div>
+                                    <select id="sel_shopmall" name="sel_shopmall">
+                                        <option>-please select-</option>
+                                        <?php
+                                       /* $sql="Select shop_name,id from add_new_job_admin_modal";
+                                        $res=mysql_query($sql);
+                                        while($result=mysql_fetch_array($res))
+                                        {                                        
+                                        ?>
+                                        <option value="<?php echo $result['id'];?>"><?php echo $result['shop_name'];?></option>
+                                        <?php } */ ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="select_box_outer fr">
+                                <div class="padding01">Select Store</div>
+                                <div>
+                                    <select id="sel_store" name="sel_store">
+                                        <option>-please select-</option>
+                                        <?php
+                                       /* $sql="Select store_name,id from add_new_job_admin_modal";
+                                        $res=mysql_query($sql);
+                                        while($result=mysql_fetch_array($res))
+                                        {                                        
+                                        ?>
+                                        <option value="<?php echo $result['id'];?>"><?php echo $result['store_name'];?></option>
+                                        <?php } */?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="padding01">Job Title <span id="job_error" style="color:#FF0000;"></span></div>
+                            <div><input type="text" class="event_input" id="txt_title" name="txt_title" onclick="removeError('job_error')"/></div>
+                            <div class="padding01">Job Reference Number (if applicable) <span id="ref_error" style="color:#FF0000;"></span></div>
+                            <div><input type="text" class="event_input" id="txt_jobRef" name="txt_jobRef" onclick="removeError('ref_error')"/></div>
+                            <div class="padding01">Description <span id="des_error_job" style="color:#FF0000;"></span></div>
+                            <div><textarea rows="0" class="description_input" cols="0" id="txtArDesc" name="txtArDesc" onclick="removeError('des_error_job')"></textarea></div>
+                            <div class="padding01">Experience <span id="exp_error" style="color:#FF0000;"></span></div>
+                            <div><textarea rows="0" class="description_input" cols="0" id="txtArExp" name="txtArExp" onclick="removeError('exp_error')"></textarea></div>
+                            <div class="padding01">Closing Date (if applicable, otherwise your post will be up for 60 days)</div>
+                            <div class="start_date_outer">
+                                <div><input type="text" class="start_date_input" id="mm" value="" name="mm"/></div>
+                                <div class="padding01">MM</div>
+                            </div>
+                            <div class="start_date_sep"><span id="job_month_error" style="color:#FF0000;"></span><img src="images/date_sep.png" alt="" /></div>
+                            <div class="start_date_outer">
+                                <div><input type="text" class="start_date_input" id="dd" name="dd"/></div>
+                                <div class="padding01">DD</div>
+                            </div>
+                            <div class="start_date_sep"> <span id="job_month_error" style="color:#FF0000;"></span><img src="images/date_sep.png" alt="" /></div>
+                            <div class="start_date_outer">
+                                <div><input type="text" class="start_date_input" id="yyyy" name="yyyy"/></div>
+                                <div class="padding01">YYYY</div>
+                            </div>
+                            <div class="calender_icon"> <span id="job_month_error" style="color:#FF0000;"></span>
+                            <input name="btn_img" type="image" src="images/calender_icon.png" id="edit_jobimg" onclick="removeError('job_month_error')" />
+                           <!-- <a href="#"><img src="images/calender_icon.png" alt="" /></a>-->
+                            
+                            </div>
+                            <div class="clear"></div>
+                            <div class="cancel_btn fl" onclick="div_sataus('add_new_job_admin_modal_popup')"><a href="#">cancel</a></div>
+                            <div class="save_btn fr" onclick="return addJobs();"><a href="#" >save</a></div>
+                            <div class="clear"></div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  </div>
+<!-- ========================================ADD NEW JOB START END ========================================================= -->
+
+
+
+   <div class="content_left_line">
+       <div class="content_right_line">
+        <div class="conent_con">
+            <div class="profile_pic_area_con">
+                <div class="profile_pic"><a href="#"></a></div>
+                
+                <ul class="profile_menu">
+                    <li><a href="#username_con_box">Profile</a></li>
+                    <li><a href="#username_con_box2">Change Password</a></li>
+                    <li><a href="#username_con_box3">Team Agent Change</a></li>
+                </ul>
+            </div>
+            <div class="profile_text_area_con">
+            
+                <div class="username_con">
+                    <h1><?php echo $this->data['user_data']['FIRST_NAME'].' '.$this->data['user_data']['LAST_NAME'];?> <span><?php echo $this->data['user_data']['JOB_TITLE'];?> </span></h1>
+                    <?php
+                    if($this->data['user_data']['MALLNAME']!=NULL) $account_type=$this->data['user_data']['MALLNAME'];
+                   else if($this->data['user_data']['O_COMPANY']!=NULL) $account_type=$this->data['user_data']['O_COMPANY'];
+                   else $account_type='Mall Rat';  
+                   ?>
+                    <h2><?php echo $account_type;?></h2>
+                </div>
+                
+                
+                <div class="username_con_box" id="username_con_box">
+                <input type="text" value="<?php echo $this->data['user_data']['FIRST_NAME'];?>" class="info_box fields" name="first_name" id="first_name" title="First Name">
+                 <input type="text" value="<?php echo $this->data['user_data']['LAST_NAME'];?>" class="info_box fields" name="last_name" id="last_name" title="Last Name">
+                  <input type="text" value="<?php echo $this->data['user_data']['EMAIL_ADDRESS'];?>" class="info_box fields" name="email" id="email" title="Email Address">
+                  <input type="hidden" value="<?php echo $this->data['user_data']['ID'];?>" name="id" id="id" >
+                  
+                  
+                  <div class="positive_con" style="margin:25px auto; overflow:auto; width:180px;"> 
+                  
+                  <div class="save_btn fr" style=" margin:0 auto!important;">
+                            <!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->
+                              <a href="javascript:updateUserProfile('profile');" class="savef" >Save</a> </div>
+                              </div>
+                </div>
+                
+                
+                <div class="username_con_box" id="username_con_box2">
+                
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td> <input type="text" value="" class="info_box fields pass" name="old_password" id="old_password" title="Old Password"style=" width:99%!important"></td>
+                    <td>&nbsp;</td>
+                    <td><input type="text" value="" class="info_box fields pass" name="new_password" id="new_password" title="New Password" style=" width:99%!important"></td>
+                    <td>&nbsp;</td>
+                    <td><input type="text" value="" class="info_box fields pass" name="retype_password" id="retype_password" title="Confirm New Password"style=" width:99%!important"></td>
+                  </tr>
+                </table>
+                  <div class="positive_con" style="margin:25px auto; overflow:auto; width:180px;"> 
+                  
+                  <div class="save_btn fr" style=" margin:0 auto!important;">
+                            <!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->
+                              <a href="javascript:updateUserProfile('pass');" class="savef" >Save</a> </div>
+                              </div>
+                </div>
+                
+                
+                <div class="username_con_box" id="username_con_box3">
+                
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td> 
+                    <label style="margin-bottom:0px!important;" class="right reright"> 
+                    
+                    <select style=" line-height:25px; display:block; width:99%; padding:0 0px; height:30px; margin:1px 0 10px 0; padding:5px 0; color:#999;border:1px solid #DDDDDD;" name="Province">    <option>Select a Team Member</option></select><div class="clear"></div>
+                    
+                    </label>
+                    
+                    </td>
+                    
+                    <td style="width:165px;"><div class="positive_con" style="margin:-8px 0 0 0 ; overflow:auto; width:165px;"> 
+                  
+                  <div class="reuest_btn fr" style=" margin:0 auto!important;">
+                            <!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->
+                              <a href="#" class="savef" >Request</a> </div>
+                              </div></td>
+                  </tr>
+                </table>
+                </div>
+            </div>
+            
+            
+             <div class="profile_team_member_area_con">
+                 <div class="teamMembers_con"><h2>Team Members</h2></div>
+               <?php foreach ($this->data['member_list'] as $team):?> 
+              <div class="teamMembers">
+                 <a href="#"><img src="images/profilepic.png" width="148" height="147"  border="0"/></a> 
+              <p><a href="#"><?php echo $team['FIRST_NAME'].' '.$team['LAST_NAME'];?></a></p>
+              </div>
+              <?php endforeach;?>
+              
+            
+          </div>
+            
+            
+          
+        </div>
+        
+        
+    </div>
+   </div>
+   
+  

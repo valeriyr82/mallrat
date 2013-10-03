@@ -1,0 +1,827 @@
+<script type="text/javascript" charset="utf-8">
+  $(function(){
+    $("input#mallhours").uniform(); 
+  });
+</script>
+<script type="text/javascript">
+
+var categorylist = null;
+function resetordermode(fieldid) {
+	$("#sortmode").val("DESC");
+	$("#"+fieldid+"_activity").attr("class","sortdown");
+	$("#sortfield").val(fieldid+"_activity");
+}
+
+$(document).ready(function() {
+	$("#content").tabs();
+	$(".fields").watermarkify();
+	
+	$("#sortmode").val("DESC");
+//	$("#res1_activity").attr("class","sortdown");
+//	$("#sortfield").val("res1_activity");
+	$(".sortablecolumn span").click(function(){
+		$(".sortablecolumn span").attr("class","");
+		if($("#sortmode").val() == "DESC") {
+			$(this).attr("class","sortup");
+			$("#sortmode").val("ASC");
+		} else {
+			$(this).attr("class","sortdown");
+			$("#sortmode").val("DESC");
+		}
+		$("#sortfield").val($(this).attr("id"));
+		userrefechpage();
+	});
+	getUserDataByStatus('all','res_1',1);
+	$("input#user_event_name").autocomplete({
+		source: "/common/getaccountlist",
+		minLength: 0,
+	}).focus(function(evt){
+		$(this).autocomplete('search', $(this).val());
+	});
+});
+
+
+$(function(){
+	$("#search_box_job").hide();
+	$("#event12").click(function(){
+		$("#add").hide();
+		$("#res").show();
+		$("#search_box_job").hide();
+		$("#search_box_event").show();
+	});
+
+	$("#job12").click(function(){  
+		$("#res").hide();
+		$("#add").show();
+		$("#search_box_job").show();
+		$("#search_box_event").hide();
+		$("#paging_event").hide();
+	});
+});
+
+STATUSLIST = {'all': 'res_1', 'active': 'res_2', 'activate': 'res_2', 'pending': 'res_3',
+		'realestate': 'res_4', 'mall': 'res_5', 'vendor': 'res_7', 'store':'res_8'};
+USERSORTFIELDMAPPER = {
+"res1_status":"STATUS","res1_eaddress":"EMAIL_ADDRESS","res1_fname":"FIRST_NAME","res1_lname":"LAST_NAME","res1_account":"ACCOUNT_NAME","res1_activity":"UPDATED_ON",
+"res2_status":"STATUS","res2_eaddress":"EMAIL_ADDRESS","res2_fname":"FIRST_NAME","res2_lname":"LAST_NAME","res2_account":"ACCOUNT_NAME","res2_activity":"UPDATED_ON",
+"res3_status":"STATUS","res3_eaddress":"EMAIL_ADDRESS","res3_fname":"FIRST_NAME","res3_lname":"LAST_NAME","res3_account":"ACCOUNT_NAME","res3_activity":"UPDATED_ON",
+"res4_status":"STATUS","res4_eaddress":"EMAIL_ADDRESS","res4_fname":"FIRST_NAME","res4_lname":"LAST_NAME","res4_account":"ACCOUNT_NAME","res4_activity":"UPDATED_ON",
+"res5_status":"STATUS","res5_eaddress":"EMAIL_ADDRESS","res5_fname":"FIRST_NAME","res5_lname":"LAST_NAME","res5_account":"ACCOUNT_NAME","res5_activity":"UPDATED_ON",
+"res7_status":"STATUS","res7_eaddress":"EMAIL_ADDRESS","res7_fname":"FIRST_NAME","res7_lname":"LAST_NAME","res7_account":"ACCOUNT_NAME","res7_activity":"UPDATED_ON",
+"res8_status":"STATUS","res8_eaddress":"EMAIL_ADDRESS","res8_fname":"FIRST_NAME","res8_lname":"LAST_NAME","res8_account":"ACCOUNT_NAME","res8_activity":"UPDATED_ON",
+}
+
+function userresetPaginator(totalpagecnt, curpage, cntperpage) {
+    paginatorHTML = "<table><tr>";
+	paginatorHTML += "<td style='width:20%;'>Current  : ";
+    if(totalpagecnt > 0) {paginatorHTML += "<SELECT id='pageselector' onchange='javascript:usergetpagedata(this.value)'>";for(i = 1; i <= totalpagecnt; i++){if(i == (parseInt(curpage))) {paginatorHTML += "<OPTION value='"+i+"' selected>"+i+"</OPTION>";} else {paginatorHTML += "<OPTION value='"+i+"'>"+i+"</OPTION>";}}paginatorHTML += "</SELECT>";} else {paginatorHTML += "<SELECT>";paginatorHTML += "<td style='width:20%;'><OPTION value='0'>0</OPTION>";paginatorHTML += "</SELECT>";}
+	paginatorHTML += "</td><td align='center'>";
+	if(totalpagecnt > 0) {
+		if(curpage > 1) {
+			paginatorHTML += "<span class='prev' onclick='javascript:usergotoprevpage();'></span>";
+		} else {
+			paginatorHTML += "<span class='prev_disable'></span>";
+		}
+	}
+    if(totalpagecnt <= PAGINATORSIZE + 1) { for (i = 1; i <= totalpagecnt; i++) { if(i == curpage) { paginatorHTML += "<span>"+i+"</span>"; } else {  paginatorHTML += "<a href='javascript:usergetpagedata("+i+")'>"+i+"</a>"; } }
+    } else if(curpage < PAGINATORSIZE) {for (i = 1; i <= PAGINATORSIZE; i++) {if(i == curpage) { paginatorHTML += "<span>"+i+"</span>";} else {paginatorHTML += "<a href='javascript:usergetpagedata("+i+")'>"+i+"</a>";}}paginatorHTML += "...";paginatorHTML += "<a href='javascript:usergetpagedata("+totalpagecnt+")'>"+totalpagecnt+"</a>";
+    } else if(curpage + PAGINATORSIZE > totalpagecnt) {paginatorHTML += "<a href='javascript:usergetpagedata(1)'>1</a>";paginatorHTML += "...";for (i = totalpagecnt - PAGINATORSIZE + 1; i <= totalpagecnt; i++) {if(i == curpage) {paginatorHTML += "<span>"+i+"</span>";} else {paginatorHTML += "<a href='javascript:usergetpagedata("+i+")'>"+i+"</a>";}}
+    } else {paginatorHTML += "<a href='javascript:usergetpagedata(1)'>1</a>";paginatorHTML += "...";for (i = curpage - Math.floor(PAGINATORSIZE / 2); i <= curpage + Math.floor(PAGINATORSIZE / 2); i++) {if(i == curpage) {paginatorHTML += "<span>"+i+"</span>";} else {paginatorHTML += "<a href='javascript:usergetpagedata("+i+")'>"+i+"</a>";}}paginatorHTML += "...";paginatorHTML += "<a href='javascript:usergetpagedata("+totalpagecnt+")'>"+totalpagecnt+"</a>";}
+	if(totalpagecnt > 0) {
+		if(curpage < totalpagecnt) {
+			paginatorHTML += "<span class='next' onclick='javascript:usergotonextpage();'></span>";
+		} else {
+			paginatorHTML += "<span class='next_disable'></span>";
+		}
+	}
+	paginatorHTML += "</td><td style='width:20%'>Items per page : ";
+	paginatorHTML += "	<SELECT id='ippselector' onchange='javascript:usercountperpagechanged(this.value);'>";
+		for(i = 25; i <=200 ; i+=25) {
+			if(cntperpage == i) {
+				paginatorHTML += "<option value='"+i+"' selected>"+i+"</option>";
+			} else {
+				paginatorHTML += "<option value='"+i+"'>"+i+"</option>";
+			}
+		}
+		paginatorHTML += "</td></tr></table>";
+	paginatorHTML += "	</SELECT>";
+    $("#editrec").html(paginatorHTML);
+}
+function usergotoprevpage() {
+	var curpage = $("#pageselector").val();
+	if(curpage > 1) {
+		curpage--;
+		usergetpagedata(curpage);
+	}
+}
+function usergotonextpage() {
+	var curpage = $("#pageselector").val();
+	curpage++;
+	usergetpagedata(curpage);
+}
+function usergetpagedata(pagenum) {
+
+    currentstatus = $("#curcategory").val();
+    getUserDataByStatus(currentstatus,STATUSLIST[currentstatus], pagenum);
+}
+function usercountperpagechanged(cnt) {
+    var cntperpage = cnt;
+	$("#cntperpage").val(cnt);
+	userrefechpage();
+}
+function userrefechpage() {
+    if($("#pageselector")) {
+        usergetpagedata($("#pageselector").val());
+    }
+}
+
+function getUserDataByStatus(status,divid,parampagenum)
+{
+	$('#'+divid+' table').find("tr:gt(0)").remove();
+	$("#editrec").html("");
+	var cntperpage = $("#cntperpage").val();
+	userresetPaginator(0, 0, cntperpage);
+	sortmode = $("#sortmode").val();
+	selectedsortfield = $("#sortfield").val();
+	if(selectedsortfield != "") {
+		sortfield = USERSORTFIELDMAPPER[selectedsortfield];
+	} else {
+		sortfield = "";
+	}
+	$.ajax({
+		async:false,
+		url: '/users/getuserdata',
+		type: 'POST',
+		//data: 'status='+status,
+		data: {status: status, pagenum: parampagenum, cntperpage:cntperpage, sortfield:sortfield, sortmode:sortmode, filterfield:"name", filtervalue:$("#searchValue").val()},
+		success: function(xmlStr) {
+//			console.log(xmlStr);
+//			return;
+			data =jQuery.parseJSON(xmlStr);
+			console.log(data);
+			var totalpagecnt = Math.floor((data.totalcnt - 1) / cntperpage) + 1;
+			userresetPaginator(totalpagecnt, data.curpage, cntperpage);
+
+			$.each(data.result, function(i, item) {
+				var status_img='';
+				
+				if(item.STATUS==1)status_img='activate.png';
+				else if(item.STATUS==0)status_img='panding1.png'; 
+				else if(item.STATUS==2)status_img='account.png'; 
+				else if(item.STATUS==3)status_img='account2.png'; 
+
+				var account_type='';  
+				if(parseInt(item.ACCOUNT_TYPE) > 0) account_type=item.ACCOUNT_NAME;
+				else account_type='Mall Rat';
+				
+				var str='';
+				if(item.STATUS==0) {
+					str+='<tr class="right_bottom_nav"><td scope="col" align="center"><a href="javascript:sendactivationmail(\''+item.ID+'\',\''+item.FIRST_NAME+'\',\''+item.LAST_NAME+'\');"><img src="images/'+status_img+'" width="80" height="20" alt="" /></a></td>';
+				} else {
+					str+='<tr class="right_bottom_nav"><td scope="col" align="center"><img src="images/'+status_img+'" width="80" height="20" alt="" /></td>';
+				}
+				str+='<td scope="col"></td>'; 
+				str+='<td scope="col">'+item.EMAIL_ADDRESS+'</td>';
+				str+='<td scope="col">'+item.FIRST_NAME+'</td>';
+				str+='<td scope="col">'+item.LAST_NAME+'</td>';
+				str+='<td scope="col">'+account_type+'</td>';
+				str+='<td scope="col">'+item.UPDATED_ON+'</td>';
+				str+='<td><div class="edit_btn basic" onclick="editPopup(\'edit_event_modal_admin_popup\');">';
+				str+='<a href="/account/view/id/'+item.ID+'">View</a></div></td>';
+				str+='<td><div class="delete_btn" onclick="deleteConfirm_state(\'content_delete_popup\',\''+item.ID+'\',\'userdelete\');"> <a href="#">delete</a> </div></td></tr>';
+				
+				$('#'+divid+' table tr:last').after(str);
+			});
+		}
+	});
+}
+function sendactivationmail(id, fname, lname) {
+	$.ajax({
+		async:false,
+		url: '/users/resendactivationmail',
+		type: 'POST',
+		data: {user_id: id, user_first_name: fname, user_last_name:lname},
+		success: function(retmsg) {
+			alert(retmsg);
+		}
+	});
+}
+</script>
+<style type="text/css">
+#fl {    
+    background:url(images/add_content_cal_active.png);
+    width:114px;
+    height:127px;
+    cursor:pointer;
+}
+#fl:hover {    
+    background:url(images/rollover01.png);
+    width:114px;
+    height:127px;
+    cursor:pointer;
+}
+#fr {
+    background:url(images/help_wanted.png);
+    width:167px;
+    height:138px;
+    cursor:pointer;
+}
+#fr:hover {
+    background:url(images/rollover02.png);
+    width:167px;
+    height:138px;
+    cursor:pointer;
+}
+</style>
+
+<!-- popups start here -->
+         <div class="faded_bg" id="add_user_popup" style="display:none;">
+    <div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="event_popup_inner">
+                        
+                        <div class="popup_baord_strip">
+                              <div class="popup_baord_left"><h1>Create User</h1></div>
+                              <div class="popup_baord_right"> <a onclick="div_sataus('add_user_popup')" href="#"><img alt="" src="images/close_popup.png"></a></div>
+                              <div class="clear"></div>
+                            </div>
+                            <div class="lets_add_heading">User Details</div>
+                            <div class="event_con">
+                                    
+                        <div class="input_area add_user_con">
+                           <form name="userForm" id="userForm" method="post"> 
+                            
+                            <input type="text" title="Email Address" value="" class="event_input fields" id="event_name" name="user_email" style="">
+                            
+                            <input type="text" title="First Name" value="" class="event_input fields" id="event_name" name="user_first_name" style="">
+                            
+                            <input type="text" title="Last Name" value="" class="event_input fields" id="event_name" name="user_last_name" style="">
+                            
+                            <input type="Account" title="Search for account to add new user to" value="" class="event_input fields" id="user_event_name" name="user_event_name" style="">
+                             
+                           </form>  
+                                
+                            </div>
+                        <div class="clear"></div>
+                        <div style="height:150px; clear:both; width:100%"></div>
+                        <div onclick="div_sataus('add_user_popup')" class="cancel_btn fl">cancel</div>
+                        <div onclick="return addNewUserData()" class="save_btn fr">
+                        <!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->
+                          <a class="savef" href="#">save</a> </div>
+               </div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+
+
+<!-- CONFIRM DELETE POPUP -->
+<div id="content_delete_popup" class="popups" style="display:none"></div>
+<!-- CONFIRM DELETE POPUP -->
+<!-- DELETE SUCCESSFULL POPUP -->
+<div class="faded_bg" id="content_delete_successfull_popup" style="display:none;">
+<div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right">
+<a href="#" onclick="div_sataus('content_delete_successfull_popup')"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="add_content_inner">
+                            <div class="lets_add_heading">Delete successful!</div>
+          <div class="add_button"><a href="#" onclick="div_sataus('content_delete_successfull_popup')">close</a></div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--faded_bg ends-->
+
+
+<!-- DELETE SUCCESS FULLPOPUP -->
+
+<!--SAVE FORM SUCCESAS START-->
+<div class="faded_bg" id="save-form-content" style="display:none;">
+<div class="popups_edit1">
+  <div id="saved_successfully_popup" class="popups">
+    <div class="popup_top"></div>
+    <div class="popup_bottom">
+      <div class="popup_mid">
+        <div class="popup_baord_strip">
+          <div class="popup_baord_left"></div>
+          <div class="popup_baord_mid"></div>
+          <div class="popup_baord_right" onclick="div_sataus('save-form-content')"> <a href="#"><img src="images/close_popup.png" alt="" /></a> </div>
+          <div class="clear"></div>
+        </div>
+        <div class="popup_box_patttern">
+          <div class="popup_paper_strip">
+            <div class="add_content_inner">
+              <div class="lets_add_heading">Form saved successfully!</div>
+              <div class="add_button" onclick="div_sataus('save-form-content')"><a href="#" onclick="countRecords();">close</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!--faded_bg ends-->
+<!-- SAVE FORM SUCCESS END -->
+
+<!-- ADD NEW EVENT POPUP -->
+
+<script type="text/javascript">
+$(function() {
+        $('#txtcal').datepicker({
+    onSelect: function(dateText, inst) {
+        var pieces = dateText.split('/');
+        $('#start_mm').val(pieces[0]);
+        $('#start_dd').val(pieces[1]);
+        $('#start_yy').val(pieces[2]);
+    }
+})
+});
+$(function() {
+        $('#txtcal2').datepicker({
+    onSelect: function(dateText, inst) {
+        var pieces = dateText.split('/');
+        $('#end_mm').val(pieces[0]);
+        $('#end_dd').val(pieces[1]);
+        $('#end_yy').val(pieces[2]);
+    }
+})
+$("#searchValue").keypress(function(e){
+ if(e.which == 13)
+ $("#search_img").click();
+});
+});
+
+$(function() {
+    $( "#edit_jobimg" ).datepicker({
+     onSelect: function(dateText, inst) {
+     var pieces = dateText.split('/');
+       $('#mm').val(pieces[0]);
+        $('#dd').val(pieces[1]);
+        $('#yyyy').val(pieces[2]);
+        }
+})
+});
+
+</script>
+<!-- ======================================== ADD NEW EVENT START ======================================================== -->
+<div id="add_new_event_modal_admin_popup" class="faded_bg" style="display:none;">
+<div class="popups_edit">
+    <div class="popup_top"></div>
+    <div class="popup_bottom">
+      <div class="popup_mid">
+        
+        <div class="popup_box_patttern">
+          <div class="popup_paper_strip">
+              <div class="event_popup_inner">
+              <div class="popup_baord_strip" style="height:21px;">
+          <div class="popup_baord_left" style="height:21px;"><h1>Request <strong>Mall Transfer</strong></h1></div>
+          <div class="popup_baord_right" style="height:21px;"> <a href="#" onclick="div_sataus('add_new_event_modal_admin_popup')"><img src="images/close_popup.png" alt="" /></a></div>
+          <div class="clear"></div>
+        </div>
+            
+                 <div class="lets_add_heading">&nbsp;</div>
+               
+                <div class="event_con">
+                    
+                     
+                    <div class="text_area">
+                    
+                     <textarea onclick="removeError('des_error')" cols="0" id="event_desc" name="event_desc " class="description_input fields" title="
+Experience" rows="0"></textarea>
+                    
+                    
+                    
+                    </div>
+                    
+                    
+                    <div class="datearea">
+                    
+                       <div style="margin:5px 0;" class="left_side_mall">
+                       <table cellspacing="0" cellpadding="0" border="0" class="datetable" style="margin:20px 0 0 0;">
+                              <tbody><tr>
+                                <td colspan="3"><div style=" width:100%; margin:5px 0 0 0;" class="lets_add_heading">House of Operation</div></td>
+                               
+                              </tr>
+                              <tr>
+                                <td>Monday</td>
+                                <td>
+                                <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Tuesday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                               <tr>
+                                <td>Wednesday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                              
+                              <tr>
+                                <td>Thursday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                               
+                              
+                            </tbody></table>
+                       <table cellspacing="0" cellpadding="0" border="0" class="datetable" style="margin:20px 0 0 0;">
+                              <tbody>
+                              <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                              </tr>
+                             <tr>
+                                <td>Friday</td>
+                               <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                               <tr>
+                                <td>Saturday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                               <tr>
+                                <td>Sunday</td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                                <td>
+                                 <select name="">
+                                    <option>Open Time</option>
+                                </select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="3">Same as Mall Hours <input name="" type="checkbox" value="" id="mallhours" /></td>
+                              </tr>
+                            </tbody></table>
+                        <div class="clear"></div>
+                        
+                        <div class="telephoneNumver_area">
+                        
+                            <input type="text" value="" class="telephone fields" title="Customer Service" name="">
+                            <input type="text" value="" class="telephone fields"  title="Customer Service" name="">
+                            <select name="" accesskey="cat_1" style="width:238px; height:31px; border: 1px solid #DDDDDD; color: #D0CFCF;">
+                                <option>Category*</option>
+                            </select>
+                        </div>
+                     </div>
+                
+                      
+                
+                    </div>
+                    
+                    
+                    
+                    <div class="clear"></div>
+                    <div onclick="div_sataus('add_new_event_modal_admin_popup')" class="cancel_btn fl"><a href="#">cancel</a></div>
+                            
+                <div onclick="return addRecord()" class="save_btn fr"><!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->         <a class="savef" href="#">save</a> </div>
+                    
+                 </div>
+             
+                    <div class="clear"></div>
+               
+                 </div>
+                 
+              
+              </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+</div>    
+
+<!-- ======================================== ADD NEW EVENT START END ======================================================== --> 
+ <!-- ========================================ADD NEW JOB START ========================================================= -->
+<div id="add_new_job_admin_modal_popup" class="faded_bg" style="display:none;">
+<div class="popups_edit">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right" >
+                        <a href="#"  onclick="div_sataus('add_new_job_admin_modal_popup')"><img src="images/close_popup.png" alt="" /></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                       <div class="popup_paper_strip">
+                        <div class="event_popup_inner">
+                        lkfsfd;lksa;lfk;lsafk;lskdf;lksfd;lk;lsdkf;l
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  </div>
+<!-- ========================================ADD NEW JOB START END ========================================================= -->
+
+
+  
+    <!-- leftpannel start here -->
+       <div class="leftpannel">
+    
+<!-- search Box Start -->    
+      <div class="search_box" >
+        <div class="search_input_box">
+          <div class="search_btn">
+            <input type="image" src="images/search_btn.png" id="search_img" onclick="searchValue('searchValue');"  />
+          </div>
+          <div class="search_input">
+            <input type="text" class="search_input" value="" id="searchValue" placeholder="Search event"  />
+          </div>
+          <div><input type="button" class="reset" name="reset" id="reset_event" value="" onclick="resetRecords('reset_event');" /></div> 
+          <div class="clear"></div>
+        </div>
+      </div>
+      <!--<div class="search_box" >
+        <div class="search_input_box">
+          <div class="search_btn">
+            <input type="image" src="images/search_btn.png" id="search_img" onclick="searchValue_jobs('searchValue_jobs');"  />
+          </div>
+          <div class="search_input">
+            <input type="text" class="search_input" value="" id="searchValue_jobs" placeholder="Search Jobs"  />
+          </div>
+          <div><input type="button" class="reset" name="reset" id="reset_jobs" value="" onclick="resetJobs('reset_jobs');" /></div> 
+          <div class="clear"></div>
+        </div>
+      </div>-->
+<!-- search box End -->      
+   <ul>
+      <li><a href="#res_1" class='basic' id="event12" onclick="resetordermode('res1');$('#curcategory').val('all');getUserDataByStatus('all','res_1', 1);" ><span class="img_tab">All</span><span class="count_all"><?php
+      
+        echo $this->data['user_status']['all'];
+        
+        ?></span></a></li>
+      
+      
+      <li> <a href="#res_2"  id="job12" onclick="resetordermode('res2');$('#curcategory').val('pending');getUserDataByStatus('pending','res_2', 1);"><span class="img_tab">Pending</span><span class="count_all">          <?php
+             echo $this->data['user_status']['pending']; 
+            ?></span></a></li>
+      
+     <li> <a href="#res_3"  id="job12" onclick="resetordermode('res3');$('#curcategory').val('mallrat');getUserDataByStatus('mallrat','res_3', 1);"><span class="img_tab">Mall Rat</span><span class="count_all">          <?php
+            echo $this->data['user_status']['mallrat'];    
+            ?></span></a></li>
+      
+     <li> <a href="#res_4"  id="job12" onclick="resetordermode('res4');$('#curcategory').val('realestate');getUserDataByStatus('realestate','res_4', 1);" ><span class="img_tab">Real Estate</span><span class="count_all">          <?php
+            echo $this->data['user_status']['realstate'];    
+            ?></span></a></li>
+      
+     <li> <a href="#res_5"  id="job12" onclick="resetordermode('res5');$('#curcategory').val('mall');getUserDataByStatus('mall','res_5',1);"><span class="img_tab">Mall</span><span class="count_all">          <?php
+              echo $this->data['user_status']['mall'];    
+            ?></span></a></li>
+      
+     
+      
+     <li> <a href="#res_7"  id="job12" onclick="resetordermode('res7');$('#curcategory').val('vendor');getUserDataByStatus('vendor','res_7',1);"><span class="img_tab">Vendor</span><span class="count_all">          <?php
+              echo $this->data['user_status']['vendor'];    
+            ?></span></a></li>
+      
+     <li> <a href="#res_8"  id="job12" onclick="resetordermode('res8');$('#curcategory').val('store');getUserDataByStatus('store','res_8',1);"><span class="img_tab">Store</span><span class="count_all">          <?php
+             echo $this->data['user_status']['store'];    
+            ?></span></a></li>
+  </ul>
+      <div class="add_content_button" onclick="div_sataus('add_user_popup')">Add User</div>
+    </div>
+    
+    <!--rightpanel   start here -->
+    <div class="rightpannel">
+    <!--rightpanel  All Nav Area Code start here -->
+          <div id="res_1" class="right_nav">
+           <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+                <td width="8%" scope="col" align="center" class="sortablecolumn"><span id="res1_status">Status</span></td>
+                <td width="5%" scope="col" align="center">&nbsp;</td>
+                <td width="23%" scope="col" class="sortablecolumn"><span id="res1_eaddress">Email Address</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res1_fname">First Name</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res1_lname">Last Name</span></td>
+                <td width="12%" scope="col" class="sortablecolumn"><span id="res1_account">Account</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res1_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div>
+     <!--rightpanel  All Nav Area Code End here -->
+     
+     
+     
+     <!--rightpanel  Activate Nav Area Code Start here -->
+      <div id="res_2" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+                <td width="8%" scope="col" align="center" class="sortablecolumn"><span id="res2_status">Status</span></td>
+                <td width="5%" scope="col" align="center">&nbsp;</td>
+                <td width="23%" scope="col" class="sortablecolumn"><span id="res2_eaddress">Email Address</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res2_fname">First Name</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res2_lname">Last Name</span></td>
+                <td width="12%" scope="col" class="sortablecolumn"><span id="res2_account">Account</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res2_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+    </table>
+          </div> 
+     <!--rightpanel  Activate Nav Area Code End here -->
+     
+     
+     <!--rightpanel  PENDING Nav Area Code Start here -->
+      <div id="res_3" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+                <td width="8%" scope="col" align="center" class="sortablecolumn"><span id="res3_status">Status</span></td>
+                <td width="5%" scope="col" align="center">&nbsp;</td>
+                <td width="23%" scope="col" class="sortablecolumn"><span id="res3_eaddress">Email Address</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res3_fname">First Name</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res3_lname">Last Name</span></td>
+                <td width="12%" scope="col" class="sortablecolumn"><span id="res3_account">Account</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res3_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div> 
+     <!--rightpanel  PENDING Nav Area Code End here -->
+     
+     
+      <!--rightpanel  REAL ESTATE Nav Area Code Start here -->
+     <div id="res_4" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+			    <td width="8%" scope="col" align="center" class="sortablecolumn"><span id="res4_status">Status</span></td>
+                <td width="5%" scope="col" align="center">&nbsp;</td>
+                <td width="23%" scope="col" class="sortablecolumn"><span id="res4_eaddress">Email Address</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res4_fname">First Name</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res4_lname">Last Name</span></td>
+                <td width="12%" scope="col" class="sortablecolumn"><span id="res4_account">Account</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res4_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div>
+     <!--rightpanel  REAL ESTATE Nav Area Code End here -->
+     
+     
+     <!--rightpanel  MALL Nav Area Code Start here -->
+     <div id="res_5" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+			    <td width="8%" scope="col" align="center" class="sortablecolumn"><span id="res5_status">Status</span></td>
+                <td width="5%" scope="col" align="center">&nbsp;</td>
+                <td width="23%" scope="col" class="sortablecolumn"><span id="res5_eaddress">Email Address</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res5_fname">First Name</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res5_lname">Last Name</span></td>
+                <td width="12%" scope="col" class="sortablecolumn"><span id="res5_account">Account</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res5_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div>
+     <!--rightpanel  MALL Nav Area Code End here -->
+     
+     
+     
+      <!--rightpanel  STORE Nav Area Code Start here -->
+     <div id="res_8" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+			    <td width="8%" scope="col" align="center" class="sortablecolumn"><span id="res8_status">Status</span></td>
+                <td width="5%" scope="col" align="center">&nbsp;</td>
+                <td width="23%" scope="col" class="sortablecolumn"><span id="res8_eaddress">Email Address</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res8_fname">First Name</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res8_lname">Last Name</span></td>
+                <td width="12%" scope="col" class="sortablecolumn"><span id="res8_account">Account</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res8_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+             
+    </table>
+          </div>
+     <!--rightpanel  STORE Nav Area Code End here -->
+     
+     
+      <!--<div style="text-align:center" id="paging_event">
+   
+  
+          <?php
+           /* for($i=1; $i<=$total_pages; $i++)
+            {
+             echo '<a href="#" id='.$i.' class="pagination" onclick="return pagination('.$i.');" style="text-decoration:none;">&nbsp;'.$i.'&nbsp;</a>';
+            }*/
+            ?>
+    </div>-->
+    <!--res-->
+    
+    <!--rightpanel  VENDOR Nav Area Code Start here -->
+     <div id="res_7" class="right_nav" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr class="right_top_nav">
+			    <td width="8%" scope="col" align="center" class="sortablecolumn"><span id="res7_status">Status</span></td>
+                <td width="5%" scope="col" align="center">&nbsp;</td>
+                <td width="23%" scope="col" class="sortablecolumn"><span id="res7_eaddress">Email Address</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res7_fname">First Name</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res7_lname">Last Name</span></td>
+                <td width="12%" scope="col" class="sortablecolumn"><span id="res7_account">Account</span></td>
+                <td width="10%" scope="col" class="sortablecolumn"><span id="res7_activity">Last Activity</span></td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+              </tr>
+              
+    </table>
+          </div>
+     <!--rightpanel  VENDOR Nav Area Code End here -->
+       
+    <div id="editrec"></div>
+	<input type="hidden" id="curcategory" value="all" />
+    <input type="hidden" id="sortmode" value="DESC" />
+    <input type="hidden" id="sortfield" value="" />
+	<input type="hidden" id="cntperpage" value="25" />
+
+        </div>  
+   <!--rightpanel  All Nav Area Code start here -->
+  

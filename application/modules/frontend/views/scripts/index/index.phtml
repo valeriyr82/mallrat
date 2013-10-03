@@ -1,0 +1,1010 @@
+<?php
+
+if (!Zend_Auth::getInstance()->hasIdentity()){
+	if (isset($this->loginForm)) {
+		$errors = $this->FormErrorsWrapper($this->loginForm);?>
+		<h3><?php echo $this->translate("Sign in") ?></h3>
+				<form action="<?php echo $this->baseUrl("/") ?>" method="post">
+					<p><input style="border: 1px solid black; margin: 8px;" type="text" name="form_useremail_login" value="<?php echo $this->translate("Email Address") ?>" /></p>
+					<p><input style="border: 1px solid black; margin: 8px;" type="password" name="form_password_login" value="<?php echo $this->translate("Password") ?>" /></p>
+					<br />
+					<input type="hidden" name="form_remember_login" value="0" />
+					<label for="form_remember_login"><input type="checkbox" id="form_remember_login" name="form_remember_login" value="1"/>&nbsp; <?php echo $this->translate("Remember me") ?></label>
+					<!-- <a class="forgot-password" href="<?php echo $this->baseUrl('/account/forgot') ?>"><?php echo $this->translate('Forgot password?') ?></a> -->
+					<input style="border: 1px solid black; padding: 3px; cursor: pointer;" type="submit" class="submit" value="<?php echo $this->translate("Sign in") ?>" />
+				</form>
+		<?php echo $errors->printErrors('form_useremail_login');?><?php echo $errors->printErrors('form_password_login');?>
+<?php }}else{
+    
+    function getTimeAgo($timestamp) {
+       $difference = time() - $timestamp;
+      
+       $periods = array("sec", "min", "hour", "day", "week", "month", "years", "decade");
+       $lengths = array("60","60","24","7","4.35","12","10");
+
+       for ($j = 0; $difference >= $lengths[$j]; $j++) {
+           $difference /= $lengths[$j];
+        }
+       
+       $difference = round($difference);
+       
+       if($difference != 1) {
+           $periods[$j].= "s";
+       }
+       
+       $text = "$difference $periods[$j] ago";
+       
+       return $text;
+    }
+    
+      $session_id=$this->data['session_id'];  
+    function composeUserCallString($email, $user_id) {
+        global $session_id;       
+        return "<a href=\"UserForm.php?session_id=$session_id&user_id=$user_id&passthrough=1\">$email</a>";
+    }
+    
+    function composeAccountCallString($mall_name, $account_id) {
+      global $session_id;    
+        return "<a href=\"AccountForm.php?session_id=$session_id&account_id=$account_id&passthrough=1\">$mall_name</a>";
+    }
+    
+    function composeRealEstateCallString($real_estate_name, $account_id) {
+       global $session_id;    
+        return "<a href=\"RealEstateForm.php?session_id=$session_id&account_id=$account_id&passthrough=1\">$real_estate_name</a>";
+    }
+    
+    ?>
+   <div class="content_left_line">
+   	<div class="content_right_line">
+    	<div class="conent_con">
+
+<script>
+    $(document).ready(function () {
+        if ($.browser.msie && parseInt($.browser.version, 10) === 8) {
+            // IE8 doesn't like Canvas.
+        } else {
+
+            var d1 = [];
+            for (var i = 0; i <= 10; i += 1)
+                d1.push([i, parseInt(Math.random() * 250)]);
+
+            var d3 = [];
+            for (var i = 0; i <= 10; i += 0.4)
+                d3.push([i, parseInt(Math.random() * 140)]);
+
+            var d4 = [];
+            for (var i = 0; i <= 10; i += 0.6)
+                d4.push([i, Math.sqrt(i * 10)]);
+
+            var d5 = [];
+            d5 = [
+                [0, 42],
+                [1, 50],
+                [2, 65],
+                [3, 76],
+                [4, 77],
+                [5, 180],
+                [6, 199],
+                [7, 220],
+                [8, 240],
+                [9, 340],
+                [10, 398]
+            ];
+
+            $.plot($("#chart-demo"),
+                [
+                    {
+                        label:"DR NU",
+                        data:d5,
+                        lines:{ show:true, fill:0.4 },
+                        color:"#8AB4B5",
+                        hoverable:true
+                    },
+                    {
+                        label:"Pattern.dk",
+                        data:d1,
+                        lines:{ show:true, lineWidth:4 },
+                        color:"#FC354C"
+                    },
+                    {
+                        label:"Pouteria",
+                        data:d3,
+                        lines:{ show:true, lineWidth:2 },
+                        color:"#1E2528"
+                    },
+                    {
+                        label:"Halifaxed.com",
+                        data:d4,
+                        lines:{ show:true, lineWidth:2 },
+                        color:"#008C83"
+                    }
+                ],
+
+                {
+                    series:{ lines:{ show:true }, points:{ show:true }, curvedLines:{ active:true } },
+                    grid:{ hoverable:true, clickable:true },
+                    legend:{ show:false },
+                    yaxis:{ position:"right" }
+                }
+            );
+
+            $("#chart-demo").tooltipColor();
+
+        }
+
+    });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        $("input#upload, input#saying, input#sending, select ").uniform();
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".fields").watermarkify();
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#search_box_job").hide();
+        $("#event12").click(function () {
+            $("#add").hide();
+            $("#res").show();
+            $("#search_box_job").hide();
+            $("#search_box_event").show();
+
+            /*$("#content").find(".left_nav").removeClass("left_nav").addClass("left_nav_active1");
+            $("#content").find(".left_nav_active1").removeClass("left_nav_active1").addClass("left_nav");*/
+        });
+
+        /*$("#left_nav_active").mouseover(function(){
+        $("#content").find(".left_nav_active").removeClass("left_nav_active").addClass("remove_color");
+        })
+        $("#left_nav_active").mouseout(function(){
+        $("#content").find(".remove_color").removeClass("remove_color").addClass("left_nav_active");
+        })
+
+        $("#left_nav").mouseover(function(){
+        $("#content").find(".left_nav").removeClass("left_nav").addClass("remove_color1");
+        })
+
+        $("#left_nav").mouseout(function(){
+        $("#content").find(".remove_color1").removeClass("remove_color1").addClass("left_nav");
+        })*/
+
+
+        $("#job12").click(function () {
+            $("#res").hide();
+            $("#add").show();
+            $("#search_box_job").show();
+            $("#search_box_event").hide();
+
+            /*$("#content").find(".left_nav").removeClass("left_nav").addClass("left_nav_active1");
+            $("#content").find(".left_nav_active").removeClass("left_nav_active").addClass("left_nav");*/
+
+            $("#paging_event").hide();
+        });
+    });
+
+
+    function activeImage(id) {
+        document.getElementById(id).style.backgroundImage = "url(/images/add_content_cal.png)";
+        document.getElementById('add_button_active').style.backgroundImage = "url(/images/add_content_buttton.png)";
+    }
+    function activeImage_help(id) {
+        document.getElementById(id).style.backgroundImage = "url(/images/rollover03.png)";
+        document.getElementById('add_button_active').style.backgroundImage = "url(/images/add_content_buttton.png)";
+    }
+</script>
+<style type="text/css">
+    #fl {
+        background: url(/images/add_content_cal_active.png);
+        width: 114px;
+        height: 127px;
+        cursor: pointer;
+    }
+
+    #fl:hover {
+        background: url(/images/rollover01.png);
+        width: 114px;
+        height: 127px;
+        cursor: pointer;
+    }
+
+    #fr {
+        background: url(/images/help_wanted.png);
+        width: 167px;
+        height: 138px;
+        cursor: pointer;
+    }
+
+    #fr:hover {
+        background: url(/images/rollover02.png);
+        width: 167px;
+        height: 138px;
+        cursor: pointer;
+    }
+</style>
+<body>
+
+
+<div id="deshboard_popup" class="faded_bg" style="display:none; padding-bottom: 1370px;">
+    <div class="popups_edit">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+
+                <div class="popup_box_patttern">
+                    <div class="popup_paper_strip">
+
+                        <div class="event_popup_inner">
+                            <div class="popup_baord_strip" style="height:21px;">
+                                <div class="popup_baord_left" style="height:21px;"><h1>Request <strong>Mall
+                                    Transfer</strong></h1></div>
+                                <div class="popup_baord_right" style="height:21px;"><a href="#"
+                                                                                       onclick="div_sataus('deshboard_popup')"><img
+                                    src="/images/close_popup.png" alt=""/></a></div>
+                                <div class="clear"></div>
+                            </div>
+
+                            <div class="lets_add_heading">&nbsp;</div>
+                            <div class="event_con">
+
+
+                                <div class="dashborad_con">
+                                    <div class="click_link_left">
+                                        <div class="sep">
+                                            <h1>Shopping Mall Name</h1>
+
+                                            <h1>Real Estate Company</h1>
+                                        </div>
+                                        <div class="sep">
+                                            <h1>Prpposed New Owner</h1>
+
+                                            <h1>Initiated by User</h1>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="click_link_right">
+                                        <div class="sep2">
+                                            <h1>Coquitlam Center</h1>
+
+                                            <h1>Morguard Investments Inc.</h1>
+                                        </div>
+                                        <div class="sep2">
+                                            <h1>Cadillac Fairview</h1>
+
+                                            <h1>Patrick Flanagan</h1>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="clear"></div>
+                                <div class="cancel_btn fl" onClick="div_sataus('deshboard_popup')"><a href="#">Disapprove</a>
+                                </div>
+
+                                <div class="save_btn fr" onclick="return addRecord()"><a href="#"
+                                                                                         class="savef">Approve</a></div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- popups start here -->
+<div class="faded_bg" id="add_new_job_event_popup" style="display:none;">
+    <div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right" onclick="div_sataus('add_new_job_event_popup')">
+                        <a href="#"><img src="/images/close_popup.png" alt=""/></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                    <div class="popup_paper_strip">
+                        <div class="add_content_inner">
+                            <div class="fl" id="fl" onclick="activeImage('fl')">&nbsp;</div>
+                            <div class="fr" id="fr" onclick="activeImage_help('fr')">&nbsp;</div>
+                            <div class="clear"></div>
+                            <div class="lets_add_heading">Lets add some new content!</div>
+                            <div class="add_button_active" id="add_button_active"
+                                 onclick="div_sataus('add_new_job_event_popup')"><a href="#">add</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- popups end here -->
+<!-- EDIT EVENT POPUP FOR ADD NEW EVENT -->
+<div id="edit_event_modal_admin_popup" class="popups">
+</div>
+<!-- EDIT EVENT POPUP END -->
+
+<!-- EDIT JOB FOR EDIT EVENT -->
+<div id="edit_job_admin_modal_popup" class="popups"></div>
+<!-- EDIT JOB FOR EDIT EVENT  END-->
+
+<!-- CONFIRM DELETE POPUP -->
+<div id="content_delete_popup" class="popups" style="display:none"></div>
+<!-- CONFIRM DELETE POPUP -->
+<!-- DELETE SUCCESSFULL POPUP -->
+<div class="faded_bg" id="content_delete_successfull_popup" style="display:none;">
+    <div class="popups_edit1">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right">
+                        <a href="#" onclick="div_sataus('content_delete_successfull_popup')"><img
+                            src="/images/close_popup.png" alt=""/></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                    <div class="popup_paper_strip">
+                        <div class="add_content_inner">
+                            <div class="lets_add_heading">Delete successful!</div>
+                            <div class="add_button"><a href="#"
+                                                       onclick="div_sataus('content_delete_successfull_popup')">close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--faded_bg ends-->
+
+
+<!-- DELETE SUCCESS FULLPOPUP -->
+
+<!--SAVE FORM SUCCESAS START-->
+<div class="faded_bg" id="save-form-content" style="display:none;">
+    <div class="popups_edit1">
+        <div id="saved_successfully_popup" class="popups">
+            <div class="popup_top"></div>
+            <div class="popup_bottom">
+                <div class="popup_mid">
+                    <div class="popup_baord_strip">
+                        <div class="popup_baord_left"></div>
+                        <div class="popup_baord_mid"></div>
+                        <div class="popup_baord_right" onclick="div_sataus('save-form-content')"><a href="#"><img
+                            src="/images/close_popup.png" alt=""/></a></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="popup_box_patttern">
+                        <div class="popup_paper_strip">
+                            <div class="add_content_inner">
+                                <div class="lets_add_heading">Form saved successfully!</div>
+                                <div class="add_button" onclick="div_sataus('save-form-content')"><a href="#"
+                                                                                                     onclick="countRecords();">close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--faded_bg ends-->
+<!-- SAVE FORM SUCCESS END -->
+
+<!-- ADD NEW EVENT POPUP -->
+
+<script type="text/javascript">
+ $(function () {
+        $('#txtdateform').datepicker({
+            onSelect: function(selected) {
+             $("#txtdateto").datepicker("option","minDate", selected)
+            }
+        });
+        $('#txtdateto').datepicker({
+            onSelect: function(selected) {
+             $("#txtdateform").datepicker("option","maxDate", selected)
+            }
+        });
+    });
+    $(function () {
+        $('#txtcal').datepicker({
+            onSelect:function (dateText, inst) {
+                var pieces = dateText.split('/');
+                $('#start_mm').val(pieces[0]);
+                $('#start_dd').val(pieces[1]);
+                $('#start_yy').val(pieces[2]);
+            }
+        })
+    });
+    $(function () {
+        $('#txtcal2').datepicker({
+            onSelect:function (dateText, inst) {
+                var pieces = dateText.split('/');
+                $('#end_mm').val(pieces[0]);
+                $('#end_dd').val(pieces[1]);
+                $('#end_yy').val(pieces[2]);
+            }
+        })
+        $("#searchValue").keypress(function (e) {
+            if (e.which == 13)
+                $("#search_img").click();
+        });
+    });
+
+    $(function () {
+        $("#edit_jobimg").datepicker({
+            onSelect:function (dateText, inst) {
+                var pieces = dateText.split('/');
+                $('#mm').val(pieces[0]);
+                $('#dd').val(pieces[1]);
+                $('#yyyy').val(pieces[2]);
+            }
+        })
+    });
+
+</script>
+<!-- ======================================== ADD NEW EVENT START ======================================================== -->
+<div id="add_new_event_modal_admin_popup" class="faded_bg" style="display:none;">
+    <div class="popups_edit">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right"><a href="#"
+                                                      onclick="div_sataus('add_new_event_modal_admin_popup')"><img
+                        src="/images/close_popup.png" alt=""/></a></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                    <div class="popup_paper_strip">
+
+                        <div class="event_popup_inner">
+                            <div class="add_event_heading">Add New Event</div>
+                            <div class="select_box_outer fl">
+                                <div class="padding01">Select Shopping Mall</div>
+                                <div>
+                                    <select id="mall">
+                                        <option selected="selected">Select</option>
+                                        <option value="138">lorem_one</option>
+                                        <option value="140">lorem_one</option>
+                                        <option value="145">138</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="select_box_outer fr">
+                                <div class="padding01">Select Store (Optional)</div>
+                                <div>
+                                    <select id="store">
+                                        <option selected="selected">Select</option>
+                                        <option value="138">lorem_three</option>
+                                        <option value="140">lorem_three</option>
+                                        <option value="145">137</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="padding01">Event Name<span id="eve_error" style="color:#FF0000;"></span></div>
+                            <div>
+                                <input type="text" name="event_name" id="event_name" class="event_input"
+                                       onclick="removeError('eve_error')"/>
+                            </div>
+                            <div class="padding01">Description<span id="des_error" style="color:#FF0000;"></span></div>
+                            <div>
+                                <textarea rows="0" class="description_input" name="event_desc" id="event_desc" cols="0"
+                                          onclick="removeError('des_error')"></textarea>
+                            </div>
+                            <div class="padding01">Start Date</div>
+                            <div class="start_date_outer">
+                                <div>
+                                    <input type="text" name="start_mm" id="start_mm" class="start_date_input"
+                                           onclick="removeError('des_error')"/>
+                                </div>
+                                <div class="padding01">MM</div>
+                            </div>
+                            <div class="start_date_sep"><span id="month_error" style="color:#FF0000;"></span><img
+                                src="/images/date_sep.png" alt=""/></div>
+                            <div class="start_date_outer">
+                                <div>
+                                    <input type="text" name="start_dd" id="start_dd" class="start_date_input" value=""/>
+                                </div>
+                                <div class="padding01">DD</div>
+                            </div>
+                            <div class="start_date_sep"><span id="month_error" style="color:#FF0000;"></span><img
+                                src="/images/date_sep.png" alt=""/></div>
+                            <div class="start_date_outer">
+                                <div>
+                                    <input type="text" name="start_yy" id="start_yy" class="start_date_input" value=""/>
+                                </div>
+                                <div class="padding01">YYYY</div>
+                            </div>
+                            <div class="calender_icon"><span id="month_error" style="color:#FF0000;"></span><input
+                                name="btn_img" type="image" src="/images/calender_icon.png" id="txtcal"
+                                onclick="removeError('month_error')"/></div>
+                            <div class="clear"></div>
+                            <div class="padding01">End Date</div>
+                            <div class="start_date_outer">
+                                <div>
+                                    <input type="text" name="end_mm" id="end_mm" class="start_date_input"/>
+                                </div>
+                                <div class="padding01">MM</div>
+                            </div>
+                            <div class="start_date_sep"><span id="endmonth_error" style="color:#FF0000;"></span><img
+                                src="/images/date_sep.png" alt=""/></div>
+                            <div class="start_date_outer">
+                                <div>
+                                    <input type="text" name="end_dd" id="end_dd" class="start_date_input"/>
+                                </div>
+                                <div class="padding01">DD</div>
+                            </div>
+                            <div class="start_date_sep"><span id="endmonth_error" style="color:#FF0000;"></span><img
+                                src="/images/date_sep.png" alt=""/></div>
+                            <div class="start_date_outer">
+                                <div>
+                                    <input type="text" name="end_yy" id="end_yy" class="start_date_input"/>
+                                </div>
+                                <div>YYYY</div>
+                            </div>
+                            <div class="calender_icon"><span id="endmonth_error" style="color:#FF0000;"></span><input
+                                name="btn_img" type="image" src="/images/calender_icon.png" id="txtcal2"
+                                onclick="removeError('endmonth_error')"/></div>
+                            <div class="clear"></div>
+                            <div class="padding01">Upload an image</div>
+                            <div><a href="#"><img src="/images/browse_btn.png" alt="" class="padding01"/></a>
+                            </div>
+                            <div class="select_box_outer fl">
+                                <div class="padding01">Twitter @Handle<span id="twitter_error"
+                                                                            style="color:#FF0000;"></span></div>
+                                <div>
+                                    <input class="twitter_input" name="twitter_handle" id="twitter_handle" type="text"
+                                           onclick="removeError('twitter_error')"/>
+                                </div>
+                            </div>
+                            <div class="select_box_outer fr">
+                                <div class="padding01">Twitter #Hashtag<span id="hashtag_error"
+                                                                             style="color:#FF0000;"></span></div>
+                                <div>
+                                    <input class="twitter_input" name="twitter_Hashtag" id="twitter_Hashtag" type="text"
+                                           onclick="removeError('hashtag_error')"/>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="cancel_btn fl" onclick="div_sataus('add_new_event_modal_admin_popup')"><a
+                                href="#" class="">cancel</a></div>
+                            <div class="save_btn fr" onclick="return addRecord()">
+                                <!--  <input name="save" class="simplemodal-close"  type="button" id="save" value="save" onclick="addRecord();" />-->
+                                <a href="#" class="savef">save</a></div>
+                            <div class="clear"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ======================================== ADD NEW EVENT START END ======================================================== -->
+<!-- ========================================ADD NEW JOB START ========================================================= -->
+<div id="add_new_job_admin_modal_popup" class="faded_bg" style="display:none;">
+    <div class="popups_edit">
+        <div class="popup_top"></div>
+        <div class="popup_bottom">
+            <div class="popup_mid">
+                <div class="popup_baord_strip">
+                    <div class="popup_baord_left"></div>
+                    <div class="popup_baord_mid"></div>
+                    <div class="popup_baord_right">
+                        <a href="#" onclick="div_sataus('add_new_job_admin_modal_popup')"><img
+                            src="/images/close_popup.png" alt=""/></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="popup_box_patttern">
+                    <div class="popup_paper_strip">
+                        <div class="event_popup_inner">
+                            <div class="add_event_heading">Add New Job</div>
+                            <div class="select_box_outer fl">
+                                <div class="padding01">Select Shopping Mall</div>
+                                <div>
+                                    <select id="sel_shopmall" name="sel_shopmall">
+                                        <option>-please select-</option>
+                                        <option value="6">-please select-</option>
+                                        <option value="7">-please select-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="select_box_outer fr">
+                                <div class="padding01">Select Store</div>
+                                <div>
+                                    <select id="sel_store" name="sel_store">
+                                        <option>-please select-</option>
+                                        <option value="6">-please select-</option>
+                                        <option value="7">-please select-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="padding01">Job Title <span id="job_error" style="color:#FF0000;"></span></div>
+                            <div><input type="text" class="event_input" id="txt_title" name="txt_title"
+                                        onclick="removeError('job_error')"/></div>
+                            <div class="padding01">Job Reference Number (if applicable) <span id="ref_error"
+                                                                                              style="color:#FF0000;"></span>
+                            </div>
+                            <div><input type="text" class="event_input" id="txt_jobRef" name="txt_jobRef"
+                                        onclick="removeError('ref_error')"/></div>
+                            <div class="padding01">Description <span id="des_error_job" style="color:#FF0000;"></span>
+                            </div>
+                            <div><textarea rows="0" class="description_input" cols="0" id="txtArDesc" name="txtArDesc"
+                                           onclick="removeError('des_error_job')"></textarea></div>
+                            <div class="padding01">Experience <span id="exp_error" style="color:#FF0000;"></span></div>
+                            <div><textarea rows="0" class="description_input" cols="0" id="txtArExp" name="txtArExp"
+                                           onclick="removeError('exp_error')"></textarea></div>
+                            <div class="padding01">Closing Date (if applicable, otherwise your post will be up for 60
+                                days)
+                            </div>
+                            <div class="start_date_outer">
+                                <div><input type="text" class="start_date_input" id="mm" value="" name="mm"/></div>
+                                <div class="padding01">MM</div>
+                            </div>
+                            <div class="start_date_sep"><span id="job_month_error" style="color:#FF0000;"></span><img
+                                src="/images/date_sep.png" alt=""/></div>
+                            <div class="start_date_outer">
+                                <div><input type="text" class="start_date_input" id="dd" name="dd"/></div>
+                                <div class="padding01">DD</div>
+                            </div>
+                            <div class="start_date_sep"><span id="job_month_error" style="color:#FF0000;"></span><img
+                                src="/images/date_sep.png" alt=""/></div>
+                            <div class="start_date_outer">
+                                <div><input type="text" class="start_date_input" id="yyyy" name="yyyy"/></div>
+                                <div class="padding01">YYYY</div>
+                            </div>
+                            <div class="calender_icon"><span id="job_month_error" style="color:#FF0000;"></span>
+                                <input name="btn_img" type="image" src="/images/calender_icon.png"
+                                       id="edit_jobimg" onclick="removeError('job_month_error')"/>
+                                <!-- <a href="#"><img src="/images/calender_icon.png" alt="" /></a>-->
+
+                            </div>
+                            <div class="clear"></div>
+                            <div class="cancel_btn fl" onclick="div_sataus('add_new_job_admin_modal_popup')"><a
+                                href="#">cancel</a></div>
+                            <div class="save_btn fr" onclick="return addJobs();"><a href="#">save</a></div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ========================================ADD NEW JOB START END ========================================================= -->
+        	
+            <div class="groupProperty_big ">
+            	<ul>
+                	<li><span style="height: 46px;">Total Mall Rat downloads</span><div id="total_mall_download"><?php echo $this->data['mallrat_downloads']?></div></li>
+                    <li class="last"><span style="height: 46px;">Total Map Sessions </span><div id="total_mall_session"><?php echo $this->data['mall_sessions']?></div></li>
+                    
+                </ul>
+            </div>
+            
+            
+        	
+            <div class="groupProperty ">
+            
+            <div class="col_1">
+            	<ul>
+                	<li><div id="total_active_user"><?php echo $this->data['users']?></div><span >Active Users this month</span></li>
+                    <li style="margin: 0pt 0pt 0pt 1.5% ! important;"><div id="total_fans"><?php echo $this->data['fans']?></div> <span>Total Fans</span></li>
+                    <li style="margin-right: 0px ! important; float: right ! important;"><div id="total_floor_mall"><?php echo $this->data['malls']?></div> <span>Total Mall Floor Plans</span></li>
+                </ul>
+                    
+                    </div>
+            <div class="col_2">
+          	   <ul>
+               <li style="margin: 0pt 0pt 0pt 0.5% ! important;"><div id="total_mall"><?php echo $this->data['malls']?></div> <span>Total Malls</span></li> 
+                <li style="margin: 0pt 0pt 0pt 1.3% ! important;"><div id="total_map_session_this_month"><?php echo $this->data['map_sessions']?></div> <span>Map Sessions this month</span></li>
+                    <li class="last" style="margin-right: 0px ! important; float: right ! important;"><div id="map_session_avg"><?php echo $this->data['map_sessions_avg']?></div> <span>Avg. Map Sessions per month</span></li>
+                    
+                </ul>
+            </div>
+            
+            	<!--<ul>
+                	<li>11,437 <span >Active Users this month</span></li>
+                    <li>37 <span>Total Fans</span></li>
+                    <li style="margin-left:1px!important; ">250 <span>Malls</span></li>
+                    
+                    <li>233 <span>Map Sessions this month</span></li>
+                    <li style="margin-left:0px!important; margin-right:6px!important;">150 <span>Avg. Map Sessions per month</span></li>
+                    <li class="last" style="margin-left:0px!important">12,356 <span>Total Map Sessions</span></li>
+                </ul>-->
+            </div>
+            
+            <div class="groupProperty_date">
+            	<div class="groupProperty_date_left" style="width:37%">
+                <ul>
+            	<li style=" margin:0 5px 0 0;">Date Range</li>
+                <li style=" margin:0 5px 0 0;"><input name="dateform" id="txtdateform" type="text" class="dateinput"   /></li>
+                <li style=" margin:0 5px 0 0;">To</li>
+                <li style=" margin:0;"><input name="dateto" id="txtdateto" type="text" class="dateinput"   /></li>
+            	</ul>
+            </div>
+                <div class="groupProperty_date_right_das" style="width:43%">
+                <ul>
+            	<li><a href="javascript:populateDashboradData();" style="padding: 1px 25px 6px 10px !important;">Apply</a></li>
+                <li><a href="javascript:filterDashboard(1);" style="padding: 1px 25px 6px 10px !important;">Current Month</a></li>
+                <li><a href="javascript:filterDashboard(2);" style="padding: 1px 25px 6px 10px !important;">3 Months</a></li>
+                <li><a href="javascript:filterDashboard(3);" style="padding: 1px 25px 6px 10px !important;">YTD</a></li>
+                <li><a href="javascript:filterDashboard(0);" style="padding: 1px 25px 6px 10px !important;">All</a></li>
+            	</ul>
+            </div>
+            
+            <div class="groupProperty_date_right_user" style="width:20%"><form id="job_select" name="job_select">
+                             <input type="radio"  id="saying" name="radio" style="opacity: 0;"> Active Users&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  id="sending" name="radio" style="opacity: 0;">New Users
+                          </form></div>
+            	
+            </div>
+            
+            <div class="grap_con">
+       	    <!--<img src="images/Shape13.png" width="1250" height="320" />-->
+	        	<div id="chart-demo" style="height: 400px; width: 100%;"></div>
+         
+            </div>
+            
+             
+            
+            
+            <div class="status_con">
+            	<div style="display:block; padding-left: 0;" class="right_nav" id="res">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tbody><tr class="right_top_nav">
+               <td width="10%"  scope="col" align="center">Recent Activity</td>
+                <td width="70%" scope="col"></td>
+                <td width="20%">&nbsp;</td>
+              </tr>
+             <?php 
+             
+             foreach ($this->activity as $action){ 
+             
+                
+             $line = "<tr class=\"right_bottom_nav\">";
+        
+        $td_prefix = "<td scope=\"col\">";
+        $td_prefix_time = "<td scope=\"col\" style=\" text-align:right; padding:0 15px 0 0;\" align=\"right\">";
+        $td_postfix = "</td>";  
+                  $title = "";
+                  $img_prefix = "";
+                  $img_postfix = "";
+                 switch ($action['TYPE']) {
+            case 0:
+                if ($action['STATUS'] == 1) {
+                    $title = "Account verified! " . composeAccountCallString($action['MALLNAME'], $action['account_id']) . " has been created. ";
+                    $title = $title . "Approved by ".$action['approved_name']." (". composeUserCallString($action['approved_email'], $action['APPROVED_BY']) . ").";
+                     $status_image = "account.png";
+                }
+                else if ($action['STATUS'] == 0) {
+                    $img_prefix = "<a style=\"cursor:pointer\" onclick=\"approvalForm('".$action['ID']."', 0)\">";
+                    $img_postfix = "</a>";
+                    $title = "Account verification requested! " . composeAccountCallString($action['MALLNAME'], $action['account_id']) . " has requested an Account verification. ";
+                    $title = $title . "Requested by ". composeUserCallString($action['requested_email'], $action['REQUESTED_BY']) . ".";
+                     $status_image = "account2.png";
+                }
+                else if ($action['STATUS'] == 2) {
+                    $email_address = $action["EMAIL_ADDRESS"];
+                    
+                    $status_image = "account2.png";
+                    $title = "Account verification denied! " . $action["MALLNAME"] . " request not approved. Please contact ".$action['EMAIL_ADDRESS'].".";
+                }
+                break;
+                
+            case 1:
+                 $title = "Account activated! " . composeAccountCallString($action['MALLNAME'], $action['account_id']) . " have activated their accounts.";
+                $status_image = "activate.png";
+                break;
+                
+            case 2:
+                if ($action['STATUS'] == 1) {
+                    $title = "Team Agent request approved! " . composeAccountCallString($action['MALLNAME'], $action['account_id']) . " has a new Team Agent - ";
+                    $title = $title . $action['new_agent_name']." (". composeUserCallString($action['new_agent_email'], $action['new_agent_id']) . "). ";
+                    $title = $title . "Approved by ".$action['approved_name']." (". composeUserCallString($action['approved_email'], $action['APPROVED_BY']) . ").";
+                     $status_image = "teamagent_icon.png";
+                }
+                else {
+                    $img_prefix = "<a style=\"cursor:pointer\" onclick=\"approvalForm('".$action['ID']."', 1)\">";
+                    $img_postfix = "</a>";                    
+                    $title = "Team Agent requested! " . composeAccountCallString($action['MALLNAME'], $action['account_id']) . " has requested a Team Agent change.";
+                     $status_image = "teamagent_red_icon.png";
+                }
+                break;
+                
+            case 3:
+                if ($action['STATUS'] == 0) {
+                    $img_prefix = "<a style=\"cursor:pointer\" onclick=\"approvalForm2('".$action['ID']."')\">";
+                    $img_postfix = "</a>";    
+                    $title = "Mall Transfer requested! " . composeRealEstateCallString($action['real_estate_name'], $action['real_estate_account_id']) . " has requested a Mall Transfer.";
+                    $status_image = "mall_transfer_red_icon.png";
+                }
+                else {
+                    $title = "Mall Transfer request approved! " . composeAccountCallString($action['MALLNAME'], $action['account_id']) . " has a new Real Estate Company.";
+                    $title = $title . " Approved by ".$action['approved_name']." (". composeUserCallString($action['approved_email'], $action['APPROVED_BY']) . ").";
+                    $status_image = "mall_transfer_green_icon.png";
+                }
+                break;
+        }
+        
+        $line .= "<td scope=\"col\" align=\"center\">";
+
+        if ($status_image != "") {
+            $line .= $img_prefix . "<img src=\"/images/" . $status_image . "\">" . $img_postfix;
+        }
+        
+        $now = new DateTime();
+        $updated_on = date_create($action["UPDATED_ON"]);
+        
+        $datetime_str = date_format($updated_on, "F j \a\\t h:ia");
+        
+        $secs = 60 * 60 * 24;
+        $d1 = (int)($updated_on->getTimestamp() / $secs);
+        $d2 = (int)($now->getTimestamp() / $secs);
+        
+        if ($d1 == $d2) {
+            $datetime_str = getTimeAgo($updated_on->getTimestamp());
+        }
+        else if ($d2 - $d1 == 1) {
+            $datetime_str = "Yesterday";
+        }
+                    
+        $line .= "</td>";
+        $line .= $td_prefix . $title . $td_postfix;
+        $line .= $td_prefix_time . $datetime_str . $td_postfix;
+        $line .= "</tr>";
+                        
+        //$i++;
+        
+        echo $line;
+        
+             }?>
+                    
+            
+            </tbody></table>
+<!--            <div class="load" onclick="div_sataus('deshboard_popup')"><a href="#">load next 10 activities</a></div>
+-->            <div class="load"><a href="#" style="padding: 4px 0 6px;">load next 10 activities </a></div>
+          </div>
+            </div>
+          		</div>
+    </div>
+   </div>
+   
+   <input id="session_id" type="hidden" value="<?php echo $this->data['session_id']; ?>"/>
+        <input id="user_id" type="hidden" value="<?php echo $this->data['user_id']; ?>"/>
+        <input id="mall_id" type="hidden" value="<?php echo $this->data['mall_id']; ?>"/>    
+        <input id="real_estate_id" type="hidden" value="<?php echo $this->data['real_estate_id']; ?>"/>    
+   
+<script>
+function getDashboardData(is_session,option){
+   
+    var xmlDoc;
+     var d = [];
+    var cdate=new Date();
+    var datefrom=$('#txtdateform').val();
+    var dateto=$('#txtdateto').val();
+        
+    if(option==1){
+       
+        var curdate=new Date();
+         dateto=curdate.getMonth()+'/'+curdate.getDate()+'/'+curdate.getFullYear();
+        curdate.setDate(1);
+        datefrom=curdate.getMonth()+'/'+curdate.getDate()+'/'+curdate.getFullYear();
+
+    }else if(option==2){
+        var curdate=new Date();
+         dateto=curdate.getMonth()+'/'+curdate.getDate()+'/'+curdate.getFullYear();
+        curdate.setMonth(curdate.getMonth() - 3);
+         datefrom=curdate.getMonth()+'/'+curdate.getDate()+'/'+curdate.getFullYear();
+    }else if(option==3){
+        var curdate=new Date();
+         dateto=curdate.getMonth()+'/'+curdate.getDate()+'/'+curdate.getFullYear();
+           curdate.setYear(curdate.getFullYear() - 1);  
+         datefrom=curdate.getMonth()+'/'+curdate.getDate()+'/'+curdate.getFullYear();
+    }
+    //jQuery.post('/index/getstatistics',{'year':cdate.getFullYear(),'month':cdate.getMonth(),'is_session':is_session, 'session_id':$('#session_id').val(), 'mall_id':$('#mall_id').val(), 'real_estate_id':$('#real_estate_id').val()},function(xmlStr){
+      $.ajax({
+                async:false,
+                url: '/index/getstatistics',
+                type: 'POST',
+                data: 'datefrom='+datefrom+'&dateto='+dateto+'&year='+cdate.getFullYear()+'&month='+cdate.getMonth()+'&is_session='+is_session+'&session_id='+$('#session_id').val()+'&mall_id='+$('#mall_id').val()+'&real_estate_id='+$('#real_estate_id').val(),
+                success: function(xmlStr) {
+                  
+                          if (window.DOMParser) {
+                            var parser = new DOMParser();
+                            xmlDoc = parser.parseFromString(xmlStr,"text/xml");
+                        }
+                        else {
+                            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                            xmlDoc.async = "false";
+                            xmlDoc.loadXML(xmlStr);
+                        }
+                  if(is_session){
+                    $('#total_mall_session').html(addCommas(getNodeValue(xmlDoc, "Total"))); 
+                    $('#total_map_session').html(addCommas(getNodeValue(xmlDoc, "TotalDataSessionValue")));                    
+                  }else{
+                      $('#total_mall_download').html(addCommas(getNodeValue(xmlDoc, "Total")));   
+                       $('#total_active_user').html(addCommas(getNodeValue(xmlDoc, "MonthUnique")));           
+                       
+                  }  
+                  $('#total_fans').html(addCommas(getNodeValue(xmlDoc, "TotalFan")));               
+                  $('#total_mall').html(addCommas(getNodeValue(xmlDoc, "MallCount"))); 
+                                
+                  $('#total_map_session_this_month').html(addCommas(getNodeValue(xmlDoc, "TotalDataSessionValue"))); 
+                                
+                  $('#map_session_avg').html(addCommas(getNodeValue(xmlDoc, "AVGMap")));               
+                  $('#total_floor_mall').html(addCommas(getNodeValue(xmlDoc, "MallFloorCount")));               
+                 //showGraph(xmlDoc,is_session); 
+                
+                  var total=getNodeValue(xmlDoc, "TotalDayData");
+                 
+                   
+                 for(i=1;i<=total;i++){
+                 d.push([i, getNodeValue(xmlDoc, "Day"+i)]);   
+               }  
+               //alert(d);
+              // return d.join('-');     
+                }
+        });
+
+      
+      return d;
+    
+   // });
+    
+}
+
+$(document).ready(function() {
+    populateDashboradData();
+    
+});
+
+function populateDashboradData()
+    {
+     var graphData=[];
+    graphData.push(getDashboardData(1));
+    graphData.push(getDashboardData(0));
+    //var data=getDashboardData(1);
+    
+showGraph(graphData);    
+    }
+function filterDashboard(option){
+    var graphData=[];
+    graphData.push(getDashboardData(1,option));
+    graphData.push(getDashboardData(0,option));
+    //var data=getDashboardData(1);
+    
+showGraph(graphData);     
+}
+
+</script>
+   <?php }?>
+   

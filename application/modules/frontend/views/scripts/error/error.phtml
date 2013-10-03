@@ -1,0 +1,21 @@
+<?php $this->headTitle($this->message, 'PREPEND'); ?>
+
+<div id="inner-page">
+	<div id="inner-content">
+		<h1><?php echo $this->translate($this->message) ?></h1>
+		<h3><?php echo $this->translate("What should I do?"); ?></h3>
+		<p><a href='/'><?php echo $this->translate("Back to front page");?></a></p>
+
+		<?php if ('production' !== APPLICATION_ENV || $this->user()->getRole()=='admin'): ?>
+		    <h3><?php echo $this->translate("Exception information");?>:</h3>
+		    <p><b><?php echo $this->translate("Message:");?></b> <?php echo $this->exception->getMessage(); ?></p>
+
+		    <h3><?php echo $this->translate("Stack trace");?>:</h3>
+		    <?php echo nl2br($this->exception->getTraceAsString()); ?>
+
+		    <h3><?php echo $this->translate("Request Parameters");?>:</h3>
+		    <?php Zend_Debug::dump($this->request->getParams()) ?>
+		<?php endif ?>
+
+	</div>
+</div>

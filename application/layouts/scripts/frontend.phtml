@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<?php echo $this->headTitle(); ?>
+
+	<link rel="shortcut icon" href="/images/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link href="/css/style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="static/stylesheets/app.css"/>
+	<link href="/css/watermarkify.css" rel="stylesheet" type="text/css" />
+	<link href="/css/uniform.default.css" rel="stylesheet" type="text/css" />
+	<!-- dialog box css start -->
+	<link type='text/css' href='/css/demo.css' rel='stylesheet' media='screen' />
+	<link type='text/css' href='/css/basic.css' rel='stylesheet' media='screen' />
+	<link type="text/css" href="/css/ui-lightness/jquery-ui-1.8.17.custom.css" rel="stylesheet" />	
+<!--	<link type="text/css" href="/css/ui-lightness/datepicker.css" rel="stylesheet" />	-->
+	<link type="text/css" href="/css/fileuploader.css" rel="stylesheet" />
+	<!-- dialog box css end -->
+	
+	<!-- dialog box js start -->
+	<script type='text/javascript' src='/js/jquery.js'></script>
+	<script type='text/javascript' src='/js/jquery.simplemodal.js'></script>
+	<script type='text/javascript' src='/js/basic.js'></script>
+	<!-- JQUERY DATEPACKER JQUERY FILES START -->
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui-1.8.17.custom.min.js"></script>
+    <script type="text/javascript" src="/js/watermarkify.0.6.js"></script>  
+	<script type="text/javascript" src="/js/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.position.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.autocomplete.js"></script>
+	<!-- JQUERY DATEPICKER JQUERY END -->
+	<!-- dialog box js end -->
+	<!-- File Upload JS-->
+	<script type="text/javascript" src="/js/fileuploader.js"></script>
+	<!-- User Defined JS -->
+	<script language="javascript" src="/functions/function.js"></script>
+	<script language="javascript" src="/js/jobs.js"></script>
+    <script src="/js/jquery.uniform.js" type="text/javascript" charset="utf-8"></script>  
+    
+    <script src="/static/scripts/base.js"></script>
+    <script src="/static/scripts/chart.js"></script>
+<!--    <script src="/static/scripts/initialize.js"></script> -->
+     
+    <script src="/js/common.js"></script>
+</head>
+	<body>
+		<!-- wrapper start here -->
+<div id="wrapper">
+  <!-- header start here -->
+  <div id="header">
+    <div class="logo"><a href="/" title="mall rat"><img src="/images/logo.png" width="160" height="39" alt="mall rate logo" /></a></div>
+    
+    <div class="header_right">
+      <div class="header_nav">
+      <?php if (Zend_Auth::getInstance()->hasIdentity()){?>
+      <ul>
+          <li <?php echo ($this->data['menu_active']=='dashboard')?'class="active"':'';?>><a href="/"><span>Dashboard</span></a></li>
+          <li <?php echo ($this->data['menu_active']=='account')?'class="active"':'';?>><a href="/account"><span>Accounts</span></a></li>
+          <li <?php echo ($this->data['menu_active']=='user')?'class="active"':'';?>><a href="/users"><span>Users</span></a></li>
+          <li <?php echo ($this->data['menu_active']=='mapbuilder')?'class="active"':'';?>><a href="/map/builder"><span>MapBuilder</span></a></li>
+          <li <?php echo ($this->data['menu_active']=='designer')?'class="active"':'';?>><a href="/map/designer"><span>Designer</span></a></li>
+          <li <?php echo ($this->data['menu_active']=='content')?'class="active"':'';?>><a href="/content"><span>Content</span></a></li>
+          <li <?php echo ($this->data['menu_active']=='data')?'class="active"':'';?>><a href="/index/data/"><span>Data</span></a></li>
+          <li <?php echo ($this->data['menu_active']=='billing')?'class="active"':'';?>><a href="/index/billing/"><span>Billing</span></a></li>
+        </ul>
+        <?php }?>
+      </div>
+    </div>
+    <div class="right_mail_logout_box">
+    	<?php if (Zend_Auth::getInstance()->hasIdentity()){?>
+      <ul>
+        <li><a href="/index/logout">Logout</a></li>
+        <li><a href="#">Mall Rat</a></li>
+      </ul>
+       <?php }?>
+      <div class="user">
+      <?php if (Zend_Auth::getInstance()->hasIdentity()){?>
+      <ul class="menu">
+              <li class="menu-item-first"><a href="#"><?php echo $this->data['user_data']['FIRST_NAME'].' '.$this->data['user_data']['LAST_NAME'];?></a>
+                 <ul class="sub-menu">
+                    <li><a href="/users/profile/id/<?php echo $this->data['user_data']['ID'];?>">Profile</a></li>
+                    <li class="last_menu"><a href="#">Account</a></li>
+                  </ul>
+              </li>
+      </ul>
+      <?php }?>
+      </div>
+    </div>
+    <div class="clear"></div>
+    
+  </div>
+  <!-- header end here -->
+  <!-- content start here -->
+  
+  <div id="content">
+			<?php echo $this->layout()->content ?>
+
+  </div>
+  <!-- content end here -->
+</div>
+<!-- wrapper end here -->
+</body>
+</html>
